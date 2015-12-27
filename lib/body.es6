@@ -1,4 +1,4 @@
-import { File, FileList, FileReader, FormData } from 'file-api';
+import FormData from 'form-data';
 import * as _ from 'lodash';
 
 const consumed = (body) => {

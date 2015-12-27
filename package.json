@@ -24,7 +24,7 @@
     "sinon-chai": "^2.8.0"
   },
   "dependencies": {
-    "file-api": "^0.10.4",
+    "form-data": "^0.2.0",
     "lodash": "^3.10.1"
   }
 }

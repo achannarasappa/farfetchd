@@ -1,4 +1,4 @@
-import { File, FileList, FileReader, FormData } from 'file-api';
+import FormData from 'form-data';
 import Body from '../../lib/body';
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
