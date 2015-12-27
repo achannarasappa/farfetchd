@@ -1,0 +1,30 @@
+{
+  "name": "farfetchd",
+  "version": "0.0.1",
+  "description": "Node Fetch standard implementation",
+  "main": "fetch.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/achannarasappa/farfetchd.git"
+  },
+  "author": "Ani Channarasappa",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/achannarasappa/farfetchd/issues"
+  },
+  "homepage": "https://github.com/achannarasappa/farfetchd#readme",
+  "devDependencies": {
+    "chai": "^3.4.1",
+    "chai-as-promised": "^5.2.0",
+    "mocha": "^2.3.4",
+    "sinon": "^1.17.2",
+    "sinon-chai": "^2.8.0"
+  },
+  "dependencies": {
+    "file-api": "^0.10.4",
+    "lodash": "^3.10.1"
+  }
+}
