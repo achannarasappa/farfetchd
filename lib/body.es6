@@ -72,6 +72,18 @@ class Body {
 
   }
 
+  blob() {
+
+    return Promise.reject(new Error('Method has not been implemented by farfetchd yet'));
+
+  }
+
+  arrayBuffer() {
+
+    return Promise.reject(new Error('Method has not been implemented by farfetchd yet'));
+
+  }
+
 }
 
 export default Body;

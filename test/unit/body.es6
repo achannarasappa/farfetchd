@@ -97,8 +97,36 @@ describe('Body', () => {
         .to.eventually
         .be.an.instanceOf(FormData);
 
-    })
+    });
 
-  })
+  });
+
+  describe('blob', () => {
+
+    it('should return a rejected promise', () => {
+
+      const testBody = new Body();
+
+      return expect(testBody.blob())
+        .to.eventually
+        .be.rejectedWith(Error, /Method has not been implemented/);
+
+    });
+
+  });
+
+  describe('arrayBuffer', () => {
+
+    it('should return a rejected promise', () => {
+
+      const testBody = new Body();
+
+      return expect(testBody.arrayBuffer())
+        .to.eventually
+        .be.rejectedWith(Error, /Method has not been implemented/);
+
+    });
+
+  });
 
 });
