@@ -18,31 +18,23 @@ describe('Headers', () => {
 
   describe('constructor', () => {
 
-    it('should call this.append for each property in headers.map if headers is an instance of Headers', () => {
+    it('should append each property in headers.map if headers is an instance of Headers', () => {
 
       const testHeaders = new Headers(moduleHeadersInstance);
-      const spiedAppend = sinon.spy(testHeaders, 'append');
 
-      expect(spiedAppend)
-        .to.have.callCount(2);
-      expect(spiedAppend.firstCall)
-        .to.be.calledWith('Content-Length', 100);
-      expect(spiedAppend.secondCall)
-        .to.be.calledWith('Content-Type', 'application/x-www-form-urlencoded');
+      expect(testHeaders)
+        .have.property('map')
+        .with.all.keys('content-length', 'content-type');
 
     });
 
-    it('should call this.append for each property in headers if headers is a plain object', () => {
+    it('should append each property in headers if headers is a plain object', () => {
 
       const testHeaders = new Headers(moduleHeadersObject);
-      const spiedAppend = sinon.spy(testHeaders, 'append');
 
-      expect(spiedAppend)
-        .to.have.callCount(2);
-      expect(spiedAppend.firstCall)
-        .to.be.calledWith('Content-Length', 100);
-      expect(spiedAppend.secondCall)
-        .to.be.calledWith('Content-Type', 'application/x-www-form-urlencoded');
+      expect(testHeaders)
+        .have.property('map')
+        .with.all.keys('content-length', 'content-type');
 
     });
 
@@ -56,24 +48,23 @@ describe('Headers', () => {
       testHeadersInstance.append(true, 100);
 
       expect(testHeadersInstance)
-        .to.have.property('map.true')
-        .that.eqls(100);
+        .to.have.deep.property('map.true');
 
     });
 
     it('should convert the header name to lowercase', () => {
 
       expect(moduleHeadersInstance)
-        .to.have.property('map.[\'content-type\']');
+        .to.have.property('map')
+        .that.has.property('content-type');
 
     });
 
     it('should throw an error is the header name contains invalid characters', () => {
 
       const testHeadersInstance = new Headers();
-      testHeadersInstance.append('@@Content-Type', 100);
 
-      expect(testHeadersInstance)
+      expect(() => testHeadersInstance.append('☃Content-Type', 100))
         .to.throw(TypeError);
 
     });
@@ -109,8 +100,10 @@ describe('Headers', () => {
       testHeadersInstance.append('Cookie', 'testcookie');
 
       expect(testHeadersInstance)
-        .to.have.deep.property('map.cookie')
-        .and.to.have.deep.property('map.[\'content-type\']');
+        .to.have.deep.property('map.cookie');
+      expect(testHeadersInstance)
+        .to.have.property('map')
+        .that.has.property('content-type');
 
     });
 
@@ -206,7 +199,7 @@ describe('Headers', () => {
 
     it('should throw an error', () => {
 
-      return expect(moduleHeadersInstance.entries())
+      return expect(() => moduleHeadersInstance.entries())
         .to.throw(Error, /Method has not been implemented/);
 
     });
@@ -217,7 +210,7 @@ describe('Headers', () => {
 
     it('should throw an error', () => {
 
-      return expect(moduleHeadersInstance.keys())
+      return expect(() => moduleHeadersInstance.keys())
         .to.throw(Error, /Method has not been implemented/);
 
     });
@@ -228,7 +221,7 @@ describe('Headers', () => {
 
     it('should throw an error', () => {
 
-      return expect(moduleHeadersInstance.values())
+      return expect(() => moduleHeadersInstance.values())
         .to.throw(Error, /Method has not been implemented/);
 
     });
