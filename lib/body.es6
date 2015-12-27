@@ -14,6 +14,8 @@ class Body {
 
   constructor(body = '') {
 
+    this.bodyUsed = false;
+
     if (_.isString(body)) {
 
       this._bodyText = body;
