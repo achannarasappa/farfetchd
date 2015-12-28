@@ -15,6 +15,7 @@ class Body {
   constructor(body = '') {
 
     this.bodyUsed = false;
+    this._bodyInit = body;
 
     if (_.isString(body)) {
 
