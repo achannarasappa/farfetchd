@@ -35,7 +35,7 @@ class Headers {
       this.map[normalizedName] = [];
 
     if (_.isArray(value))
-      this.map[normalizedName].concat(_.map(value, castString));
+      this.map[normalizedName].push(..._.map(value, castString));
 
     if (!_.isArray(value))
       this.map[normalizedName].push(castString(value));
