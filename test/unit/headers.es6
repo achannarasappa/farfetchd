@@ -91,7 +91,7 @@ describe('Headers', () => {
 
     });
 
-    it('should append the header values to this.map[name] if this.map[name] is not undefined', () => {
+    it('should append the header value to this.map[name] and cast the value to a string if this.map[name] is not an array', () => {
 
       const testHeadersObject = {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -104,6 +104,23 @@ describe('Headers', () => {
       expect(testHeadersInstance)
         .to.have.property('map')
         .that.has.property('content-type');
+
+    });
+
+    it('should append all header values to this.map[name] and cast each value to a string if this.map[name] is an array', () => {
+
+      const testHeadersObject = {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      };
+      const testHeadersInstanceA = new Headers(testHeadersObject);
+      testHeadersInstanceA.map[true] = 'test';
+      const testHeadersInstanceB = new Headers(testHeadersInstanceA);
+
+      expect(testHeadersInstanceB)
+        .to.have.property('map')
+        .that.has.property('content-type');
+      expect(testHeadersInstanceB)
+        .to.have.deep.property('map.true');
 
     });
 
