@@ -1,5 +1,6 @@
 import Request from '../../lib/request';
 import Headers from '../../lib/headers';
+import FormData from 'form-data';
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
 const expect = chai.expect;
@@ -34,25 +35,94 @@ describe('Request', () => {
     });
 
     it('should set this.headers to a new instance of Headers with init.headers if init.headers is ' +
-      'not undefined');
+      'not undefined', () => {
+
+      const testHeadersObject = { 'Content-Length': 333 };
+
+      expect(new Request('http://example.com', { headers: testHeadersObject }))
+        .to.have.deep.property('headers.map')
+        .that.has.property('content-length')
+        .that.eqls([ '333' ]);
+
+      });
 
     it('should set this.headers to a new instance of Headers with no arguments if none of the ' +
-      'preceding conditions are met');
+      'preceding conditions are met', () => {
+
+      expect(new Request('http://example.com'))
+        .to.have.property('headers')
+        .that.is.an.instanceOf(Headers);
+
+      });
 
     it('should set the input bodyUsed property to true if the input is an instance of Request and ' +
-      'init.body is undefined');
+      'init.body is falsy', () => {
 
-    it('should set this.url to input if input is an url');
+      const testRequestInstance = new Request('http://example.com');
+      new Request(testRequestInstance);
 
-    it('should throw an Error if input is neither a url nor an instance of Request');
+      expect(testRequestInstance)
+        .to.have.property('bodyUsed')
+        .that.eqls(true);
 
-    it('should throw a TypeError if the method is either HEAD or GET and a body is set');
+      });
+
+    it('should set this.url to input if input is an url', () => {
+
+      const testUrl = 'http://example.com';
+
+      expect(new Request(testUrl))
+        .to.have.property('url')
+        .that.eqls(testUrl);
+      
+    });
+
+    it('should throw an TypeError if input is neither a url nor an instance of Request', () => {
+
+      expect(() => new Request(new Request('http://example.com')))
+        .to.not.throw();
+      expect(() => new Request('http://example.com'))
+        .to.not.throw();
+      expect(() => new Request('hello'))
+        .to.throw(TypeError);
+
+    });
+
+    it('should throw a Error if the method is either HEAD or GET and a body is set', () => {
+    
+      expect(() => new Request('http://example.com', {
+        method: 'GET',
+        body: 'test',
+      }))
+      .to.throw(Error);
+      expect(() => new Request('http://example.com', {
+        method: 'POST',
+        body: 'test',
+      }))
+      .to.not.throw();
+      
+    });
 
   });
 
   describe('clone', () => {
 
-    it('should return a new instance of Request');
+    it('should return a new instance of Request', () => {
+
+      const testUrl = 'http://example.com';
+      const testRequestInstanceA = new Request(testUrl);
+      const testRequestInstanceB = testRequestInstanceA.clone();
+      testRequestInstanceA.test = true;
+
+      expect(testRequestInstanceB)
+        .to.be.an.instanceOf(Request)
+        .that.not.has.property('test');
+      expect(testRequestInstanceB)
+        .to.be.an.instanceOf(Request)
+        .that.has.property('url')
+        .that.eqls(testUrl);
+      
+    });
 
   });
 

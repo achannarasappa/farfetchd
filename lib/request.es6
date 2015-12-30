@@ -21,6 +21,9 @@ class Request extends Body{
 
     super(body);
 
+    if (!isInputRequestInstance && !isInputUrl)
+      throw new TypeError('Invalid input');
+
     if (isInputRequestInstance && input.bodyUsed)
       throw new TypeError('Body already read');
 
@@ -40,7 +43,7 @@ class Request extends Body{
       this.url = input;
 
     if (isInputRequestInstance)
-      _.extend(this, defaults, _.pick(input, _.keys(defaults).push('url')));
+      _.extend(this, defaults, _.pick(input, _.keys(defaults).concat('url')));
 
     if (isInputUrl)
       _.extend(this, defaults, _.pick(init, _.keys(defaults)));
