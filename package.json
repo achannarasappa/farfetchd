@@ -4,7 +4,10 @@
   "description": "Node Fetch standard implementation",
   "main": "fetch.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "compile": "./node_modules/babel/bin/babel.js ./ --out-dir ./ -x .es6",
+    "test": "./node_modules/mocha/bin/mocha --recursive",
+    "style": "./node_modules/jscs/bin/jscs .",
+    "prepublish": "npm run compile"
   },
   "repository": {
     "type": "git",
@@ -20,7 +23,9 @@
     "babel": "^5.8.34",
     "chai": "^3.4.1",
     "chai-as-promised": "^5.2.0",
+    "jscs": "^2.7.0",
     "mocha": "^2.3.4",
+    "pre-commit": "^1.1.2",
     "sinon": "^1.17.2",
     "sinon-chai": "^2.8.0"
   },

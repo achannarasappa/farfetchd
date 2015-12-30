@@ -70,7 +70,7 @@ class Headers {
 
   'set'(name, value) {
 
-    this.map[normalizeName(name)] = [castString(value)]
+    this.map[normalizeName(name)] = [ castString(value) ]
 
   }
 

@@ -24,46 +24,46 @@ describe('Request', () => {
     it('should set this.headers to a new instance of Headers with input.headers if the input is an ' +
       'instance of Request and init.headers is not set', () => {
 
-      const testHeadersObject = { 'Content-Length': 100 };
-      const testHeadersInstance = new Headers(testHeadersObject);
-      const testRequestInstance = new Request('http://example.com', { headers: testHeadersObject });
+        const testHeadersObject = { 'Content-Length': 100 };
+        const testHeadersInstance = new Headers(testHeadersObject);
+        const testRequestInstance = new Request('http://example.com', { headers: testHeadersObject });
 
-      expect(new Request(testRequestInstance))
-        .to.have.property('headers')
-        .that.eqls(testHeadersInstance);
+        expect(new Request(testRequestInstance))
+          .to.have.property('headers')
+          .that.eqls(testHeadersInstance);
 
-    });
+      });
 
     it('should set this.headers to a new instance of Headers with init.headers if init.headers is ' +
       'not undefined', () => {
 
-      const testHeadersObject = { 'Content-Length': 333 };
+        const testHeadersObject = { 'Content-Length': 333 };
 
-      expect(new Request('http://example.com', { headers: testHeadersObject }))
-        .to.have.deep.property('headers.map')
-        .that.has.property('content-length')
-        .that.eqls([ '333' ]);
+        expect(new Request('http://example.com', { headers: testHeadersObject }))
+          .to.have.deep.property('headers.map')
+          .that.has.property('content-length')
+          .that.eqls([ '333' ]);
 
       });
 
     it('should set this.headers to a new instance of Headers with no arguments if none of the ' +
       'preceding conditions are met', () => {
 
-      expect(new Request('http://example.com'))
-        .to.have.property('headers')
-        .that.is.an.instanceOf(Headers);
+        expect(new Request('http://example.com'))
+          .to.have.property('headers')
+          .that.is.an.instanceOf(Headers);
 
       });
 
     it('should set the input bodyUsed property to true if the input is an instance of Request and ' +
       'init.body is falsy', () => {
 
-      const testRequestInstance = new Request('http://example.com');
-      new Request(testRequestInstance);
+        const testRequestInstance = new Request('http://example.com');
+        new Request(testRequestInstance);
 
-      expect(testRequestInstance)
-        .to.have.property('bodyUsed')
-        .that.eqls(true);
+        expect(testRequestInstance)
+          .to.have.property('bodyUsed')
+          .that.eqls(true);
 
       });
 

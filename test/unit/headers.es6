@@ -214,34 +214,34 @@ describe('Headers', () => {
 
   describe('entries', () => {
 
-    it('should throw an error', () => {
+    it('should throw an error', () =>
 
-      return expect(() => moduleHeadersInstance.entries())
-        .to.throw(Error, /Method has not been implemented/);
+      expect(() => moduleHeadersInstance.entries())
+        .to.throw(Error, /Method has not been implemented/)
 
-    });
+    );
 
   });
 
   describe('keys', () => {
 
-    it('should throw an error', () => {
+    it('should throw an error', () =>
 
-      return expect(() => moduleHeadersInstance.keys())
-        .to.throw(Error, /Method has not been implemented/);
+      expect(() => moduleHeadersInstance.keys())
+        .to.throw(Error, /Method has not been implemented/)
 
-    });
+    );
 
   });
 
   describe('values', () => {
 
-    it('should throw an error', () => {
+    it('should throw an error', () =>
 
-      return expect(() => moduleHeadersInstance.values())
-        .to.throw(Error, /Method has not been implemented/);
+      expect(() => moduleHeadersInstance.values())
+        .to.throw(Error, /Method has not been implemented/)
 
-    });
+    );
 
   });
 
