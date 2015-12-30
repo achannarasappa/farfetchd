@@ -62,7 +62,6 @@ describe('Body', () => {
 
         });
 
-
     });
 
     it('should return a resolved promise if the body has not been used', () => {
