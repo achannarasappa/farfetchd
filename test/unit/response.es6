@@ -9,23 +9,37 @@ describe('Response', () => {
 
   describe('constructor', () => {
 
-    it('should set this.ok to true if init.status is between 199 and 300');
+    it('should set this.ok to true if init.status is between 199 and 300', () => {
+
+      expect(new Response('', {
+        status: 200,
+      }))
+
+    });
 
     it('should set this.headers to an instance of Headers if it not one already');
 
-    it('should set this.url to an empty string if one is not present in init');
+    it('should set this.headerList to an object of containing headers');
+
+    it('should set this.url to init.url if init.url is a string');
+
+    it('should set this.url to the first url in init.urlList if init.urlList is an array');
 
     it('should throw an error if body is defined but not an object');
 
     it('should throw an error if init is defined but not an object');
 
-    it('should throw an error if init.status is undefined or not a number');
+    it('should throw an error if init.status is not a number or undefined');
 
-    it('should throw an error if init.type is not a string');
+    it('should throw an error if init.type is not a string or undefined');
 
-    it('should throw an error if init.statusText is not a string');
+    it('should throw an error if init.statusMessage is not a string or undefined');
 
-    it('should throw an error if init.url is not a string');
+    it('should throw an error if init.urlList is not an array or undefined');
+
+    it('should throw an error if init.terminationReason is not a string or undefined');
+
+    it('should throw an error if init.cacheState is not a string or undefined');
 
   });
 
