@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import Body from './body';
 import Headers from './headers';
 
-class Request extends Body{
+class Request extends Body {
 
   constructor(input, init = {}) {
 
