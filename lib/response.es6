@@ -4,7 +4,7 @@ import Headers from './headers';
 
 class Response extends Body {
 
-  constructor(body, init = {}) {
+  constructor(body = '', init = {}) {
 
     super(body);
 
