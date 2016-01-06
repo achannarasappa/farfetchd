@@ -1,9 +1,8 @@
 import Request from '../../lib/request';
 import Headers from '../../lib/headers';
 import FormData from 'form-data';
-const chai = require('chai');
-const chaiAsPromised = require('chai-as-promised');
-const expect = chai.expect;
+import { default as chai, expect } from 'chai';
+import { default as chaiAsPromised } from 'chai-as-promised';
 
 chai.use(chaiAsPromised);
 
