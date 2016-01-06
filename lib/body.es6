@@ -1,5 +1,5 @@
 import FormData from 'form-data';
-import * as _ from 'lodash';
+import { default as _ } from 'lodash';
 
 const consumed = (body) => {
 
@@ -54,22 +54,14 @@ class Body {
       .then((body) => {
 
         const form = new FormData();
+        const pairs = body.trim().replace(/\+/g, '').split('&');
 
-        body.trim().split('&').forEach((bytes) => {
+        _.forEach(pairs, (pair) => form.append(..._(pair)
+            .thru(decodeURIComponent)
+            .split('=')
+            .value()));
 
-          if (bytes) {
-
-            const split = bytes.split('=');
-            const name = split.shift().replace(/\+/g, ' ');
-            const value = split.join('=').replace(/\+/g, ' ');
-
-            form.append(decodeURIComponent(name), decodeURIComponent(value))
-
-          }
-
-        });
-
-        return form
+        return form;
 
       });
 
