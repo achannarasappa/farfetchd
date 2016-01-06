@@ -1,4 +1,4 @@
-import FormData from 'form-data';
+import FormData from 'isomorphic-form-data';
 import Body from '../../lib/body';
 import { default as chai, expect } from 'chai';
 import { default as chaiAsPromised } from 'chai-as-promised';
