@@ -1,6 +1,6 @@
 import Request from '../../lib/request';
 import Headers from '../../lib/headers';
-import FormData from 'form-data';
+import FormData from 'isomorphic-form-data';
 import { default as chai, expect } from 'chai';
 import { default as chaiAsPromised } from 'chai-as-promised';
 

@@ -1,4 +1,4 @@
-import FormData from 'form-data';
+import FormData from 'isomorphic-form-data';
 import { default as _ } from 'lodash';
 
 const consumed = (body) => {
