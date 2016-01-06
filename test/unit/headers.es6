@@ -1,9 +1,8 @@
 import Headers from '../../lib/headers';
-const chai = require('chai');
-const chaiAsPromised = require('chai-as-promised');
-const sinon = require('sinon');
-const sinonChai = require('sinon-chai');
-const expect = chai.expect;
+import { default as chai, expect } from 'chai';
+import { default as chaiAsPromised } from 'chai-as-promised';
+import { default as sinon } from 'sinon';
+import { default as sinonChai } from 'sinon-chai';
 
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
