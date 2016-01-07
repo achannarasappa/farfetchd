@@ -161,7 +161,7 @@ describe('Response', () => {
       }))
         .to.not.throw();
 
-    });0
+    });
 
     it('should throw an error if init.httpsState is not a string or undefined', () => {
 
@@ -176,7 +176,7 @@ describe('Response', () => {
 
     });
 
-  });0
+  });
 
   describe('clone', () => {
 
