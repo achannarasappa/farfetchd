@@ -24,6 +24,4 @@ describe('fetch', () => {
 
   it('should return a promise that resolves into a Response');
 
-  it('should resolve a Response with ')
-
 });
