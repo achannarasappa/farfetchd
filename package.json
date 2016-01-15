@@ -4,7 +4,7 @@
   "description": "Node Fetch standard implementation",
   "main": "fetch.js",
   "scripts": {
-    "compile": "./node_modules/babel/bin/babel.js ./ --out-dir ./ -x .es6",
+    "compile": "./node_modules/.bin/babel ./ --out-dir ./ -x .es6",
     "test": "./node_modules/mocha/bin/mocha --recursive",
     "style": "./node_modules/jscs/bin/jscs .",
     "prepublish": "npm run compile"
