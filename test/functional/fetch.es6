@@ -22,6 +22,10 @@ describe('fetch', () => {
 
   it('should make a PUT request to to the input url with all init options');
 
+  it('should make a PATCH request to to the input url with all init options');
+
+  it('should make a HEAD request to to the input url with all init options');
+
   it('should make a DELETE request to to the input url with all init options');
 
   after(() => {
