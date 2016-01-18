@@ -1,5 +1,6 @@
 import FormData from 'isomorphic-form-data';
 import { default as _ } from 'lodash';
+import { Promise } from 'es6-promise';
 
 const consumed = (body) => {
 
