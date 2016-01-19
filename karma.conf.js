@@ -11,9 +11,7 @@ module.exports = function(config) {
       'lib/**/*.js',
       'test/**/*.js',
     ],
-    exclude: [
-      'test/functional/fetch.js',
-    ],
+    exclude: [],
     preprocessors: {
       'lib/**/*.js': [
         'browserify',
