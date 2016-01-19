@@ -2,3 +2,4 @@ node_modules
 .idea/
 *.js
 !karma.conf.js
+!gulpfile.js
