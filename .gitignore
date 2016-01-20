@@ -3,3 +3,4 @@ node_modules
 *.js
 !karma.conf.js
 !gulpfile.js
+dist
