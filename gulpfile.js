@@ -58,22 +58,6 @@ gulp.task('test', function(done) {
   runSequence([ 'test-server-start', 'test-client', 'test-server', 'test-server-stop' ], done)
 });
 
-gulp.task('test-server-start', function() {
-
-  if (!server)
-    server = spawn('./node_modules/.bin/json-server', [ './test/functional/db.json' ], {
-      detached: true,
-      stdio: 'inherit',
-    });
-
-});
-
-gulp.task('test-server-stop', function() {
-
-  server.kill();
-
-});
-
 gulp.task('test-client', function(done) {
 
   new Karma({
