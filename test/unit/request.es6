@@ -16,7 +16,7 @@ describe('Request', () => {
       testRequestInstance.bodyUsed = true;
 
       expect(() => new Request(testRequestInstance))
-        .to.throw(TypeError, 'Body already read');
+        .to.throw(TypeError, 'Request body already used');
 
     });
 
@@ -66,7 +66,7 @@ describe('Request', () => {
 
       });
 
-    it('should set this.url to input if input is an url', () => {
+    it('should set this.url to input if input is a string', () => {
 
       const testUrl = 'http://example.com';
 
@@ -76,30 +76,81 @@ describe('Request', () => {
       
     });
 
-    it('should throw an TypeError if input is neither a url nor an instance of Request', () => {
+    it('should throw a TypeError if input is neither a string nor an instance of Request', () => {
 
       expect(() => new Request(new Request('http://example.com')))
         .to.not.throw();
       expect(() => new Request('http://example.com'))
         .to.not.throw();
-      expect(() => new Request('hello'))
+      expect(() => new Request(true))
         .to.throw(TypeError);
 
     });
 
-    it('should throw a Error if the method is either HEAD or GET and a body is set', () => {
+    it('should throw a TypeError if the method is either HEAD or GET and a body is set', () => {
     
       expect(() => new Request('http://example.com', {
         method: 'GET',
         body: 'test',
       }))
-      .to.throw(Error);
+        .to.throw(TypeError);
       expect(() => new Request('http://example.com', {
         method: 'POST',
         body: 'test',
       }))
-      .to.not.throw();
+        .to.not.throw();
       
+    });
+
+    it('should throw a TypeError is init.mode is not \'navigate\', \'same-origin\', \'no-cors\', or \'cors\'', () => {
+    
+      expect(() => new Request('http://example.com', {
+        mode: true,
+      }))
+        .to.throw(TypeError);
+      expect(() => new Request('http://example.com', {
+        mode: 'test',
+      }))
+        .to.throw(TypeError);
+      expect(() => new Request('http://example.com', {
+        mode: 'navigate',
+      }))
+        .to.not.throw();
+      
+    });
+
+    it('should throw a TypeError is init.credentialsMode is not \'omit\', \'same-origin\', or \'include\'', () => {
+
+      expect(() => new Request('http://example.com', {
+        credentialsMode: true,
+      }))
+        .to.throw(TypeError);
+      expect(() => new Request('http://example.com', {
+        credentialsMode: 'test',
+      }))
+        .to.throw(TypeError);
+      expect(() => new Request('http://example.com', {
+        credentialsMode: 'omit',
+      }))
+        .to.not.throw();
+
+    });
+
+    it('should throw a TypeError is init.cache is not \'default\', \'no-store\', \'reload\', \'no-cache\', or \'force-cache\'', () => {
+
+      expect(() => new Request('http://example.com', {
+        cacheMode: true,
+      }))
+        .to.throw(TypeError);
+      expect(() => new Request('http://example.com', {
+        cacheMode: 'test',
+      }))
+        .to.throw(TypeError);
+      expect(() => new Request('http://example.com', {
+        cacheMode: 'reload',
+      }))
+        .to.not.throw();
+
     });
 
   });

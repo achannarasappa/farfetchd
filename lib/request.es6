@@ -2,30 +2,56 @@ import * as _ from 'lodash';
 import Body from './body';
 import Headers from './headers';
 
+const validMethods = [
+  'DELETE',
+  'GET',
+  'HEAD',
+  'OPTIONS',
+  'POST',
+  'PUT'
+];
+const validModes = [
+  'navigate',
+  'same-origin',
+  'no-cors',
+  'cors'
+];
+const validCredentialsModes = [
+  'omit',
+  'same-origin',
+  'include'
+];
+const validCacheModes = [
+  'default',
+  'no-store',
+  'reload',
+  'no-cache',
+  'force-cache'
+];
+const defaults = {
+  credentialsMode: 'omit',
+  method: 'GET',
+  mode: 'cors',
+  referrer: 'client',
+  redirect: 'manual',
+  cacheMode: 'default',
+};
+
 class Request extends Body {
 
   constructor(input, init = {}) {
 
     const isInputRequestInstance = input instanceof Request;
-    const isInputUrl = _.isString(input) && /\b((?:https?:\/\/|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/i.test(input);
-    const methods = [ 'DELETE', 'GET', 'HEAD', 'OPTIONS', 'POST', 'PUT' ];
+    const isInputUrl = _.isString(input);
     const body = (isInputRequestInstance && !init.body) ? input._bodyInit : init.body;
-    const defaults = {
-      credentials: 'omit',
-      method: 'GET',
-      mode: 'cors',
-      referrer: 'client',
-      redirect: 'manual',
-      cache: 'default',
-    };
 
     super(body);
 
     if (!isInputRequestInstance && !isInputUrl)
-      throw new TypeError('Invalid input');
+      throw new TypeError('Invalid request input');
 
     if (isInputRequestInstance && input.bodyUsed)
-      throw new TypeError('Body already read');
+      throw new TypeError('Request body already used');
 
     if (isInputRequestInstance && !init.body)
       input.bodyUsed = true;
@@ -50,11 +76,20 @@ class Request extends Body {
 
     this.method = this.method.toUpperCase();
 
-    if (!_.includes(methods, this.method))
-      throw new Error('Invalid http method');
+    if (!_.includes(validMethods, this.method))
+      throw new TypeError('Invalid http method');
 
     if (_.includes([ 'GET', 'HEAD' ], this.method) && !_.isEmpty(body))
-      throw new Error('Body not allowed for GET or HEAD requests');
+      throw new TypeError('Body not allowed for GET or HEAD requests');
+
+    if (!_.includes(validModes, this.mode))
+      throw new TypeError('Invalid request mode');
+
+    if (!_.includes(validCredentialsModes, this.credentialsMode))
+      throw new TypeError('Invalid request credentialsMode');
+
+    if (!_.includes(validCacheModes, this.cacheMode))
+      throw new TypeError('Invalid request cacheMode');
 
   }
 
