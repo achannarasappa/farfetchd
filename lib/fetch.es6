@@ -6,9 +6,14 @@ import Response from './response';
 import httpNode from './http/node';
 import httpBrowser from './http/browser';
 
-const http = _.isUndefined(typeof XMLHttpRequest) ? httpNode : httpBrowser;
-
 const fetch = (input, init) => {
+
+  const request = new Request(input, init);
+  const {
+    http = _.isUndefined(typeof XMLHttpRequest) ? httpNode : httpBrowser,
+  } = init;
+
+  return http(request)
 
 };
 
