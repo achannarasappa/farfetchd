@@ -153,6 +153,12 @@ describe('Request', () => {
 
     });
 
+    it(`should set the 'Content-Length' header to the body length if a body is provided`);
+
+    it(`should set the 'Accept' header to '*/*' if the header is not already set`);
+
+    it(`should set the 'User-Agent' header to 'farfetched/version' if the header is not already set`);
+
   });
 
   describe('clone', () => {
