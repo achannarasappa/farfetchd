@@ -6,7 +6,7 @@ describe('fetch', () => {
 
   it('should make a GET request to the input url', () => {
 
-    return expect(fetch('http://localhost:3000/posts/1'))
+    return expect(fetch('http://localhost:3000/posts/1', {}))
       .to.be.fulfilled.then((response) => {
 
         expect(response)
@@ -35,5 +35,7 @@ describe('fetch', () => {
   it('should make a DELETE request to the input url');
 
   it('should return a list of urls visited through redirects');
+
+  it('should use the native promise implementation if one exists');
 
 });
