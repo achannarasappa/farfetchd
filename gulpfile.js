@@ -55,7 +55,7 @@ gulp.task('bundle', [ 'compile' ], function () {
 });
 
 gulp.task('test', function(done) {
-  runSequence([ 'test-server-start', 'test-client', 'test-server', 'test-server-stop' ], done)
+  runSequence([ 'test-client', 'test-server', ], done)
 });
 
 gulp.task('test-client', function(done) {
