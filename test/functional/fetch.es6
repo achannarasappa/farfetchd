@@ -4,6 +4,11 @@ import { default as chaiAsPromised } from 'chai-as-promised';
 
 describe('fetch', () => {
 
+  before(() => {
+
+
+  });
+
   it('should make a GET request to the input url', () => {
 
     return expect(fetch('http://localhost:3000/posts/1', {}))

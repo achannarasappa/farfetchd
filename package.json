@@ -36,7 +36,6 @@
     "gulp-uglify": "^1.5.1",
     "gulp-util": "^3.0.7",
     "jscs": "^2.7.0",
-    "json-server": "^0.8.6",
     "karma": "^0.13.19",
     "karma-browserify": "^4.4.2",
     "karma-chai-plugins": "^0.6.1",
