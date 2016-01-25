@@ -8,11 +8,9 @@ import httpBrowser from './http/browser';
 
 const fetch = (input, init) => {
 
-  const request = new Request(input, init = {});
-  const {
-    http = _.isUndefined(typeof XMLHttpRequest) ? httpNode : httpBrowser,
-  } = init;
-
+  const request = new Request(input, init);
+  const http = typeof XMLHttpRequest === 'undefined' ? httpNode : httpBrowser;
+  
   return http(request)
 
 };

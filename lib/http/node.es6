@@ -6,14 +6,18 @@ import Response from '../response';
 const httpNode = (request) => {
 
   const {
+    method
+  } = request;
+  const {
     protocol,
     hostname,
     port,
     auth,
     pathname,
   } = parseUrl(request.url);
-  const client = protocol === 'https' ? https : http;
+  const client = protocol === 'https:' ? https : http;
   const options = {
+    method,
     protocol,
     hostname,
     port,
@@ -23,11 +27,18 @@ const httpNode = (request) => {
 
   return new Promise((resolve, reject) => {
 
-    client.request(options, (res) => {
+    let data;
+    const req = client.request(options, (res) => {
 
+      res.on('data', (chunk) => (data += chunk));
 
+      res.on('end', () => resolve(data));
 
-    })
+    });
+
+    req.on('error', (error) => reject(error));
+
+    req.end();
 
   })
 

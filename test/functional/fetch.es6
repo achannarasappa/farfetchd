@@ -1,29 +1,85 @@
 import { default as fetch, Request, Response, Body, Headers } from '../../lib/fetch';
+import { default as mockServer } from 'mockserver-grunt';
+import { mockServerClient } from 'mockserver-client';
 import { default as chai, expect } from 'chai';
 import { default as chaiAsPromised } from 'chai-as-promised';
 
-describe('fetch', () => {
+const MOCK_SERVER_HOST = 'localhost';
+const MOCK_SERVER_PORT = 1080;
+
+chai.use(chaiAsPromised);
+
+describe('fetch', function() {
+
+  this.timeout(0);
+
+  const client = mockServerClient(MOCK_SERVER_HOST, MOCK_SERVER_PORT);
 
   before(() => {
 
+    return mockServer.start_mockserver({
+      serverPort: 1080,
+      verbose: true,
+    })
+      .then(() => {
+
+        return client
+          .mockAnyResponse({
+            httpRequest: {
+              method: 'GET',
+              path: '/users',
+            },
+            httpResponse: {
+              statusCode: 200,
+              body: JSON.stringify({
+                id: 4,
+                name: 'charmander'
+              }),
+            },
+          });
+
+      })
+
+  });
+
+  after(() => {
+
+    return mockServer.stop_mockserver();
 
   });
 
   it('should make a GET request to the input url', () => {
 
-    return expect(fetch('http://localhost:3000/posts/1', {}))
-      .to.be.fulfilled.then((response) => {
+    return expect(fetch(`http://${MOCK_SERVER_HOST}:${MOCK_SERVER_PORT}/users`))
+      .to.be.fulfilled.then(() => {
 
-        expect(response)
-          .to.be.an.instanceof(Response);
-
-        return expect(response.json())
-          .to.eventually
-          .eql({
-            id: 1,
-            title: 'help computer',
-            author: 'charmander',
-          })
+        return expect(client
+          .verify({
+            method: 'GET',
+            path: '/users',
+            headers: [
+              {
+                name: 'Content-Length',
+                values: [ 0 ],
+              },
+              {
+                name: 'Accept',
+                values: [ '*/*' ],
+              },
+              {
+                name: 'User-Agent',
+                values: [ 'farfetched' ],
+              },
+              {
+                name: 'Connection',
+                values: [ 'close' ],
+              },
+              {
+                name: 'Host',
+                values: [ `${MOCK_SERVER_HOST}:${MOCK_SERVER_PORT}` ],
+              },
+            ],
+          })).to.be.fulfilled
 
       });
 
@@ -42,5 +98,7 @@ describe('fetch', () => {
   it('should return a list of urls visited through redirects');
 
   it('should use the native promise implementation if one exists');
+
+  it('should send any user headers with a request');
 
 });

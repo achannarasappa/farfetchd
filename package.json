@@ -42,6 +42,8 @@
     "karma-mocha": "^0.2.1",
     "karma-phantomjs-launcher": "^0.2.3",
     "mocha": "^2.3.4",
+    "mockserver-client": "^1.0.10",
+    "mockserver-grunt": "^1.0.30",
     "phantomjs": "^1.9.19",
     "pre-commit": "^1.1.2",
     "run-sequence": "^1.1.5",
