@@ -60,7 +60,7 @@ describe('fetch', function() {
             headers: [
               {
                 name: 'Content-Length',
-                values: [ 0 ],
+                values: [ '0' ],
               },
               {
                 name: 'Accept',
