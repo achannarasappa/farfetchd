@@ -81,14 +81,12 @@ describe('fetch', function() {
                     values: [ `farfetched/${ require('../../package.json').version }` ],
                   },
                   {
-                    name: 'Connection',
-                    values: [ 'keep-alive' ],
-                  },
-                  {
                     name: 'Host',
                     values: [ `${MOCK_SERVER_HOST}:${MOCK_SERVER_PORT}` ],
                   },
                 ],
+                keepAlive: true,
+                secure: false,
               })).to.be.fulfilled
 
           });
