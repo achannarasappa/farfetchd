@@ -1,13 +1,11 @@
 import { http, https } from 'follow-redirects';
 import { Promise } from 'es6-promise';
 import { default as parseUrl } from 'url-parse';
+import { default as _ } from 'lodash';
 import Response from '../response';
 
 const httpNode = (request) => {
 
-  const {
-    method
-  } = request;
   const {
     protocol,
     hostname,
@@ -17,12 +15,13 @@ const httpNode = (request) => {
   } = parseUrl(request.url);
   const client = protocol === 'https:' ? https : http;
   const options = {
-    method,
+    method: request.method,
     protocol,
     hostname,
     port,
     auth,
     path: pathname,
+    headers: _.mapValues(request.headers.map, (values) => _.join(values, ', ')),
   };
 
   return new Promise((resolve, reject) => {
