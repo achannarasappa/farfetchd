@@ -59,7 +59,7 @@ describe('fetch', function() {
           .to.be.fulfilled.then((response) => {
 
             expect(response)
-              .to.be.an.instanceof(Request);
+              .to.be.an.instanceof(Response);
             expect(response._bodyText)
               .to.eql(expectedResponseBody);
 

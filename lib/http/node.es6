@@ -27,7 +27,7 @@ const httpNode = (request) => {
 
   return new Promise((resolve, reject) => {
 
-    let data;
+    let data = '';
     const req = client.request(options, (res) => {
 
       res.on('data', (chunk) => (data += chunk));
