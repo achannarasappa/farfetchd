@@ -153,13 +153,44 @@ describe('Request', () => {
 
     });
 
-    it(`should set the 'Content-Length' header to the body length if a body is provided`);
+    it.only(`should set the 'Content-Length' header to the body length if a body is provided`, () => {
+    
+      expect(new Request('http://example.com', {
+        method: 'POST',
+        body: 'test'
+      }))
+        .to.have.deep.property('headers.map')
+        .to.have.property('content-length')
+        .that.eqls([ '4' ]);
+      
+    });
 
-    it(`should set the 'Accept' header to '*/*' if the header is not already set`);
+    it(`should set the 'Accept' header to '*/*' if the header is not already set`, () => {
 
-    it(`should set the 'User-Agent' header to 'farfetched/version' if the header is not already set`);
+      expect(new Request('http://example.com'))
+        .to.have.deep.property('headers.map')
+        .to.have.property('accept')
+        .that.eqls([ '*/*' ]);
 
-    it(`should set the 'Connection' header to 'keep-alive' if the header is not already set`);
+    });
+
+    it(`should set the 'User-Agent' header to 'farfetched/${ require('../../package.json').version }' if the header is not already set`, () => {
+
+      expect(new Request('http://example.com'))
+        .to.have.deep.property('headers.map')
+        .to.have.property('user-agent')
+        .that.eqls([ `farfetched/${ require('../../package.json').version }` ]);
+      
+    });
+
+    it(`should set the 'Connection' header to 'keep-alive' if the header is not already set`, () => {
+
+      expect(new Request('http://example.com'))
+        .to.have.deep.property('headers.map')
+        .to.have.property('connection')
+        .that.eqls([ 'keep-alive' ]);
+
+    });
 
   });
 
