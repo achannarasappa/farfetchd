@@ -37,6 +37,11 @@ describe('fetch', function() {
 
   it('should make a GET request to the input url', () => {
 
+    const expectedResponseBody = JSON.stringify({
+      id: 4,
+      name: 'charmander'
+    });
+
     return client
       .mockAnyResponse({
         httpRequest: {
@@ -45,16 +50,18 @@ describe('fetch', function() {
         },
         httpResponse: {
           statusCode: 200,
-          body: JSON.stringify({
-            id: 4,
-            name: 'charmander'
-          }),
+          body: expectedResponseBody,
         },
       })
       .then(() => {
 
         return expect(fetch(`http://${MOCK_SERVER_HOST}:${MOCK_SERVER_PORT}/users`))
-          .to.be.fulfilled.then(() => {
+          .to.be.fulfilled.then((response) => {
+
+            expect(response)
+              .to.be.an.instanceof(Request);
+            expect(response._bodyText)
+              .to.eql(expectedResponseBody);
 
             return expect(client
               .verify({

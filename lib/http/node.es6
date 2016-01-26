@@ -32,7 +32,7 @@ const httpNode = (request) => {
 
       res.on('data', (chunk) => (data += chunk));
 
-      res.on('end', () => resolve(data));
+      res.on('end', () => resolve(new Response(data)));
 
     });
 
