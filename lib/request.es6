@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
 import Body from './body';
 import Headers from './headers';
+import { VERSION } from './constants';
 
 const validMethods = [
   'DELETE',
@@ -28,7 +29,7 @@ const validCacheModes = [
   'no-cache',
   'force-cache'
 ];
-const defaults = {
+const defaultProperties = {
   credentialsMode: 'omit',
   method: 'GET',
   mode: 'cors',
@@ -51,6 +52,13 @@ class Request extends Body {
   constructor(input, init = {}) {
 
     const isInputRequestInstance = input instanceof Request;
+    const body = getBody(input, init);
+    const defaultHeaders = {
+      'Content-Length': 0,
+      'Accept': '*/*',
+      'User-Agent': `farfetched/${ VERSION }`,
+      'Connection': 'keep-alive',
+    };
 
     if (!isInputRequestInstance && !_.isString(input))
       throw new TypeError('Invalid request input');
@@ -58,28 +66,31 @@ class Request extends Body {
     if (isInputRequestInstance && input.bodyUsed)
       throw new TypeError('Request body already used');
 
-    super(getBody(input, init));
+    super(body);
 
     if (isInputRequestInstance && !init.body)
       input.bodyUsed = true;
 
+    if (body)
+      defaultHeaders['Content-Length'] = body.length;
+
     if (isInputRequestInstance && !init.headers)
-      this.headers = new Headers(input.headers);
+      this.headers = new Headers(_.defaults(input.headers, defaultHeaders));
 
     if (init.headers)
-      this.headers = new Headers(init.headers);
+      this.headers = new Headers(_.defaults(init.headers, defaultHeaders));
 
     if (!_.has(this, 'headers'))
-      this.headers = new Headers();
+      this.headers = new Headers(defaultHeaders);
 
     if (_.isString(input))
       this.url = input;
 
     if (isInputRequestInstance)
-      _.extend(this, defaults, _.pick(input, _.keys(defaults).concat('url')));
+      _.extend(this, defaultProperties, _.pick(input, _.keys(defaultProperties).concat('url')));
 
     if (_.isString(input))
-      _.extend(this, defaults, _.pick(init, _.keys(defaults)));
+      _.extend(this, defaultProperties, _.pick(init, _.keys(defaultProperties)));
 
     this.method = this.method.toUpperCase();
 
