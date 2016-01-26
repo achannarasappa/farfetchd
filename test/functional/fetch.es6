@@ -19,26 +19,13 @@ describe('fetch', function() {
 
     return mockServer.start_mockserver({
       serverPort: 1080,
-      verbose: true,
     })
-      .then(() => {
 
-        return client
-          .mockAnyResponse({
-            httpRequest: {
-              method: 'GET',
-              path: '/users',
-            },
-            httpResponse: {
-              statusCode: 200,
-              body: JSON.stringify({
-                id: 4,
-                name: 'charmander'
-              }),
-            },
-          });
+  });
 
-      })
+  beforeEach(() => {
+
+    return client.reset();
 
   });
 
@@ -50,38 +37,56 @@ describe('fetch', function() {
 
   it('should make a GET request to the input url', () => {
 
-    return expect(fetch(`http://${MOCK_SERVER_HOST}:${MOCK_SERVER_PORT}/users`))
-      .to.be.fulfilled.then(() => {
+    return client
+      .mockAnyResponse({
+        httpRequest: {
+          method: 'GET',
+          path: '/users',
+        },
+        httpResponse: {
+          statusCode: 200,
+          body: JSON.stringify({
+            id: 4,
+            name: 'charmander'
+          }),
+        },
+      })
+      .then(() => {
 
-        return expect(client
-          .verify({
-            method: 'GET',
-            path: '/users',
-            headers: [
-              {
-                name: 'Content-Length',
-                values: [ '0' ],
-              },
-              {
-                name: 'Accept',
-                values: [ '*/*' ],
-              },
-              {
-                name: 'User-Agent',
-                values: [ 'farfetched' ],
-              },
-              {
-                name: 'Connection',
-                values: [ 'close' ],
-              },
-              {
-                name: 'Host',
-                values: [ `${MOCK_SERVER_HOST}:${MOCK_SERVER_PORT}` ],
-              },
-            ],
-          })).to.be.fulfilled
+        return expect(fetch(`http://${MOCK_SERVER_HOST}:${MOCK_SERVER_PORT}/users`))
+          .to.be.fulfilled.then(() => {
 
-      });
+            return expect(client
+              .verify({
+                method: 'GET',
+                path: '/users',
+                headers: [
+                  {
+                    name: 'Content-Length',
+                    values: [ '0' ],
+                  },
+                  {
+                    name: 'Accept',
+                    values: [ '*/*' ],
+                  },
+                  {
+                    name: 'User-Agent',
+                    values: [ `farfetched/${ require('../../package.json').version }` ],
+                  },
+                  {
+                    name: 'Connection',
+                    values: [ 'keep-alive' ],
+                  },
+                  {
+                    name: 'Host',
+                    values: [ `${MOCK_SERVER_HOST}:${MOCK_SERVER_PORT}` ],
+                  },
+                ],
+              })).to.be.fulfilled
+
+          });
+
+      })
 
   });
 

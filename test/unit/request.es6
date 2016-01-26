@@ -159,6 +159,8 @@ describe('Request', () => {
 
     it(`should set the 'User-Agent' header to 'farfetched/version' if the header is not already set`);
 
+    it(`should set the 'Connection' header to 'keep-alive' if the header is not already set`);
+
   });
 
   describe('clone', () => {
