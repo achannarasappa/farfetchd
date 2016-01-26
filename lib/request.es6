@@ -39,9 +39,6 @@ const defaults = {
 
 const getBody = (input, init) => {
 
-  if (_.isString(input))
-    return input;
-
   if (input instanceof Request && !init.body)
     return input._bodyInit;
 
