@@ -37,21 +37,31 @@ const defaults = {
   cacheMode: 'default',
 };
 
+const getBody = (input, init) => {
+
+  if (_.isString(input))
+    return input;
+
+  if (input instanceof Request && !init.body)
+    return input._bodyInit;
+
+  return init.body;
+
+};
+
 class Request extends Body {
 
   constructor(input, init = {}) {
 
     const isInputRequestInstance = input instanceof Request;
-    const isInputUrl = _.isString(input);
-    const body = (isInputRequestInstance && !init.body) ? input._bodyInit : init.body;
 
-    super(body);
-
-    if (!isInputRequestInstance && !isInputUrl)
+    if (!isInputRequestInstance && !_.isString(input))
       throw new TypeError('Invalid request input');
 
     if (isInputRequestInstance && input.bodyUsed)
       throw new TypeError('Request body already used');
+
+    super(getBody(input, init));
 
     if (isInputRequestInstance && !init.body)
       input.bodyUsed = true;
@@ -65,13 +75,13 @@ class Request extends Body {
     if (!_.has(this, 'headers'))
       this.headers = new Headers();
 
-    if (isInputUrl)
+    if (_.isString(input))
       this.url = input;
 
     if (isInputRequestInstance)
       _.extend(this, defaults, _.pick(input, _.keys(defaults).concat('url')));
 
-    if (isInputUrl)
+    if (_.isString(input))
       _.extend(this, defaults, _.pick(init, _.keys(defaults)));
 
     this.method = this.method.toUpperCase();
