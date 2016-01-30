@@ -10,6 +10,7 @@ describe('Request', () => {
 
   describe('constructor', () => {
 
+    // https://github.com/whatwg/fetch/blob/010dd7ad85d9bb893c7bbb03e2cbb800068da18e/Overview.html#L3805
     it('should throw a TypeError if the input is an instance of Request and input.bodyUsed is true', () => {
 
       const testRequestInstance = new Request('http://example.com');
@@ -20,6 +21,7 @@ describe('Request', () => {
 
     });
 
+    // https://github.com/whatwg/fetch/blob/010dd7ad85d9bb893c7bbb03e2cbb800068da18e/Overview.html#L4009
     it('should set this.headers to a new instance of Headers with input.headers if the input is an ' +
       'instance of Request and init.headers is not set', () => {
 
@@ -38,6 +40,7 @@ describe('Request', () => {
 
       });
 
+    // https://github.com/whatwg/fetch/blob/010dd7ad85d9bb893c7bbb03e2cbb800068da18e/Overview.html#L4013
     it('should set this.headers to a new instance of Headers with init.headers if init.headers is ' +
       'not undefined', () => {
 
@@ -50,6 +53,7 @@ describe('Request', () => {
 
       });
 
+    // https://github.com/whatwg/fetch/blob/010dd7ad85d9bb893c7bbb03e2cbb800068da18e/Overview.html#L4102
     it('should set this.headers to a new instance of Headers with no arguments if none of the ' +
       'preceding conditions are met', () => {
 
@@ -59,6 +63,7 @@ describe('Request', () => {
 
       });
 
+    // https://github.com/whatwg/fetch/blob/010dd7ad85d9bb893c7bbb03e2cbb800068da18e/Overview.html#L4086
     it('should set the input bodyUsed property to true if the input is an instance of Request and ' +
       'init.body is falsy', () => {
 
@@ -71,6 +76,7 @@ describe('Request', () => {
 
       });
 
+    // https://github.com/whatwg/fetch/blob/010dd7ad85d9bb893c7bbb03e2cbb800068da18e/Overview.html#L3892
     it('should set this.url to input if input is a string', () => {
 
       const testUrl = 'http://example.com';
@@ -81,6 +87,7 @@ describe('Request', () => {
       
     });
 
+    // https://github.com/whatwg/fetch/blob/010dd7ad85d9bb893c7bbb03e2cbb800068da18e/Overview.html#L3700
     it('should throw a TypeError if input is neither a string nor an instance of Request', () => {
 
       expect(() => new Request(new Request('http://example.com')))
@@ -92,6 +99,7 @@ describe('Request', () => {
 
     });
 
+    // https://github.com/whatwg/fetch/blob/010dd7ad85d9bb893c7bbb03e2cbb800068da18e/Overview.html#L4041
     it('should throw a TypeError if the method is either HEAD or GET and a body is set', () => {
     
       expect(() => new Request('http://example.com', {
@@ -107,6 +115,7 @@ describe('Request', () => {
       
     });
 
+    // https://github.com/whatwg/fetch/blob/010dd7ad85d9bb893c7bbb03e2cbb800068da18e/Overview.html#L833
     it('should throw a TypeError is init.mode is not \'navigate\', \'same-origin\', \'no-cors\', or \'cors\'', () => {
     
       expect(() => new Request('http://example.com', {
@@ -124,6 +133,7 @@ describe('Request', () => {
       
     });
 
+    // https://github.com/whatwg/fetch/blob/010dd7ad85d9bb893c7bbb03e2cbb800068da18e/Overview.html#L847
     it('should throw a TypeError is init.credentialsMode is not \'omit\', \'same-origin\', or \'include\'', () => {
 
       expect(() => new Request('http://example.com', {
@@ -141,6 +151,7 @@ describe('Request', () => {
 
     });
 
+    // https://github.com/whatwg/fetch/blob/010dd7ad85d9bb893c7bbb03e2cbb800068da18e/Overview.html#L861
     it('should throw a TypeError is init.cache is not \'default\', \'no-store\', \'reload\', \'no-cache\', or \'force-cache\'', () => {
 
       expect(() => new Request('http://example.com', {
@@ -158,7 +169,8 @@ describe('Request', () => {
 
     });
 
-    it(`should set the 'Content-Length' header to the body length if a body is provided`, () => {
+    // https://github.com/whatwg/fetch/blob/010dd7ad85d9bb893c7bbb03e2cbb800068da18e/Overview.html#L2529
+    it(`should default the 'Content-Length' header to the body length`, () => {
 
       const testPayload = new FormData();
       testPayload.append('id', '5');
@@ -182,7 +194,8 @@ describe('Request', () => {
       
     });
 
-    it(`should set the 'Accept' header to '*/*' if the header is not already set`, () => {
+    // https://github.com/whatwg/fetch/blob/010dd7ad85d9bb893c7bbb03e2cbb800068da18e/Overview.html#L1698
+    it(`should default the 'Accept' header to '*/*'`, () => {
 
       expect(new Request('http://example.com'))
         .to.have.deep.property('headers.map')
@@ -191,7 +204,8 @@ describe('Request', () => {
 
     });
 
-    it(`should set the 'User-Agent' header to 'farfetched/${ require('../../package.json').version }' if the header is not already set`, () => {
+    // https://github.com/whatwg/fetch/blob/010dd7ad85d9bb893c7bbb03e2cbb800068da18e/Overview.html#L2557
+    it(`should default the 'User-Agent' header to 'farfetched/${ require('../../package.json').version }'`, () => {
 
       expect(new Request('http://example.com'))
         .to.have.deep.property('headers.map')
@@ -200,7 +214,7 @@ describe('Request', () => {
       
     });
 
-    it(`should set the 'Connection' header to 'keep-alive' if the header is not already set`, () => {
+    it(`should default the 'Connection' header to 'keep-alive'`, () => {
 
       expect(new Request('http://example.com'))
         .to.have.deep.property('headers.map')
@@ -209,10 +223,19 @@ describe('Request', () => {
 
     });
 
+    // https://github.com/whatwg/fetch/blob/010dd7ad85d9bb893c7bbb03e2cbb800068da18e/Overview.html#L3551
+    it(`it should default the 'Content-Type' header to 'multipart/form-data;boundary=' when body is
+     an instance of FormData`);
+
+    // https://github.com/whatwg/fetch/blob/010dd7ad85d9bb893c7bbb03e2cbb800068da18e/Overview.html#L3573
+    it(`it should default the 'Content-Type' header to 'text/plain;charset=UTF-8' when body is
+     a string`);
+
   });
 
   describe('clone', () => {
 
+    // https://github.com/whatwg/fetch/blob/010dd7ad85d9bb893c7bbb03e2cbb800068da18e/Overview.html#L4154
     it('should return a new instance of Request', () => {
 
       const testUrl = 'http://example.com';
