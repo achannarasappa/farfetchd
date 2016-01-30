@@ -23,7 +23,12 @@ describe('Request', () => {
     it('should set this.headers to a new instance of Headers with input.headers if the input is an ' +
       'instance of Request and init.headers is not set', () => {
 
-        const testHeadersObject = { 'Content-Length': 100 };
+        const testHeadersObject = {
+          'Content-Length': 100,
+          'Accept': '*/*',
+          'Connection': 'keep-alive',
+          'User-Agent': 'farfetched/0.0.1',
+        };
         const testHeadersInstance = new Headers(testHeadersObject);
         const testRequestInstance = new Request('http://example.com', { headers: testHeadersObject });
 
@@ -153,15 +158,27 @@ describe('Request', () => {
 
     });
 
-    it.only(`should set the 'Content-Length' header to the body length if a body is provided`, () => {
-    
+    it.only(`should set the 'Content-Length' header to the body length if a string body is provided`, () => {
+
+      const testPayload = new FormData();
+      testPayload.append('id', '5');
+      testPayload.append('name', 'charmeleon');
+
       expect(new Request('http://example.com', {
         method: 'POST',
-        body: 'test'
+        body: 'test',
       }))
         .to.have.deep.property('headers.map')
         .to.have.property('content-length')
         .that.eqls([ '4' ]);
+
+      expect(new Request('http://example.com', {
+        method: 'POST',
+        body: testPayload,
+      }))
+        .to.have.deep.property('headers.map')
+        .to.have.property('content-length')
+        .that.eqls([ '271' ]);
       
     });
 

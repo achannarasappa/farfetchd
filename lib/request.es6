@@ -1,4 +1,5 @@
 import * as _ from 'lodash';
+import FormData from 'isomorphic-form-data';
 import Body from './body';
 import Headers from './headers';
 import { VERSION } from './constants';
@@ -71,8 +72,11 @@ class Request extends Body {
     if (isInputRequestInstance && !init.body)
       input.bodyUsed = true;
 
-    if (body)
+    if (_.isString(body))
       defaultHeaders['Content-Length'] = body.length;
+
+    if (body instanceof FormData)
+      defaultHeaders['Content-Length'] = body.getLengthSync();
 
     if (isInputRequestInstance && !init.headers)
       this.headers = new Headers(_.defaults(input.headers, defaultHeaders));
