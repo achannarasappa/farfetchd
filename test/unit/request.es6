@@ -158,7 +158,7 @@ describe('Request', () => {
 
     });
 
-    it.only(`should set the 'Content-Length' header to the body length if a string body is provided`, () => {
+    it(`should set the 'Content-Length' header to the body length if a body is provided`, () => {
 
       const testPayload = new FormData();
       testPayload.append('id', '5');
