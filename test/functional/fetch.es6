@@ -1,4 +1,5 @@
 import { default as fetch, Request, Response, Body, Headers } from '../../lib/fetch';
+import FormData from 'isomorphic-form-data';
 import { default as mockServer } from 'mockserver-grunt';
 import { mockServerClient } from 'mockserver-client';
 import { default as chai, expect } from 'chai';
@@ -37,10 +38,12 @@ describe('fetch', function() {
 
   it('should make a GET request to the input url', () => {
 
-    const expectedResponseBody = JSON.stringify({
-      id: 4,
-      name: 'charmander'
-    });
+    const expectedResponseBody = JSON.stringify([
+      {
+        id: 4,
+        name: 'charmander',
+      },
+    ]);
 
     return client
       .mockAnyResponse({
@@ -95,7 +98,79 @@ describe('fetch', function() {
 
   });
 
-  it('should make a POST request to the input url with a payload');
+  it('should make a POST request to the input url with a multipart/form-data payload', () => {
+
+    const expectedResponseBody = JSON.stringify({
+      id: '5',
+      name: 'charmeleon'
+    });
+    const testPayload = new FormData();
+    testPayload.append('id', '5');
+    testPayload.append('name', 'charmeleon');
+
+    return client
+      .mockAnyResponse({
+        httpRequest: {
+          method: 'POST',
+          path: '/users',
+        },
+        httpResponse: {
+          statusCode: 200,
+          body: expectedResponseBody,
+        },
+      })
+      .then(() => {
+
+        return expect(fetch(`http://${MOCK_SERVER_HOST}:${MOCK_SERVER_PORT}/users`, {
+          method: 'POST',
+          body: testPayload,
+        }))
+          .to.be.fulfilled.then((response) => {
+
+            expect(response)
+              .to.be.an.instanceof(Response);
+            expect(response._bodyText)
+              .to.eql(expectedResponseBody);
+
+            return expect(client
+              .verify({
+                method: 'POST',
+                path: '/users',
+                headers: [
+                  {
+                    name: 'content-type',
+                    values: [ `multipart/form-data; boundary=${testPayload.getBoundary()}` ],
+                  },
+                  {
+                    name: 'content-length',
+                    values: [ '271' ],
+                  },
+                  {
+                    name: 'accept',
+                    values: [ '*/*' ],
+                  },
+                  {
+                    name: 'user-agent',
+                    values: [ `farfetched/${ require('../../package.json').version }` ],
+                  },
+                  {
+                    name: 'host',
+                    values: [ `${MOCK_SERVER_HOST}:${MOCK_SERVER_PORT}` ],
+                  },
+                ],
+                body: {
+                  type: 'STRING',
+                  value: `--${testPayload.getBoundary()}\r\nContent-Disposition: form-data; name=\"id\"\r\n\r\n5\r\n--${testPayload.getBoundary()}\r\nContent-Disposition: form-data; name=\"name\"\r\n\r\ncharmeleon\r\n--${testPayload.getBoundary()}--\r\n`,
+                },
+                keepAlive: true,
+                secure: false,
+              })).to.be.fulfilled
+
+          });
+
+      })
+
+  });
 
   it('should make a PUT request to the input url with a payload');
 
