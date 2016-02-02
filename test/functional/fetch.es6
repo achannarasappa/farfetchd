@@ -1,5 +1,6 @@
 import { default as fetch, Request, Response, Body, Headers } from '../../lib/fetch';
 import FormData from 'isomorphic-form-data';
+import qs from 'qs';
 import { default as mockServer } from 'mockserver-grunt';
 import { mockServerClient } from 'mockserver-client';
 import { default as chai, expect } from 'chai';
@@ -161,6 +162,84 @@ describe('fetch', function() {
                 body: {
                   type: 'STRING',
                   value: `--${testPayload.getBoundary()}\r\nContent-Disposition: form-data; name=\"id\"\r\n\r\n5\r\n--${testPayload.getBoundary()}\r\nContent-Disposition: form-data; name=\"name\"\r\n\r\ncharmeleon\r\n--${testPayload.getBoundary()}--\r\n`,
+                },
+                keepAlive: true,
+                secure: false,
+              })).to.be.fulfilled
+
+          });
+
+      })
+
+  });
+
+  it('should make a POST request to the input url with a application/x-www-form-urlencoded payload', () => {
+
+    const testObject = {
+      id: '6',
+      name: 'charizard'
+    };
+    const expectedResponseBody = JSON.stringify(testObject);
+    // TODO: Replace with URLSearchParams
+    const testPayload = qs.stringify(testObject);
+
+    return client
+      .mockAnyResponse({
+        httpRequest: {
+          method: 'POST',
+          path: '/users',
+        },
+        httpResponse: {
+          statusCode: 200,
+          body: expectedResponseBody,
+        },
+      })
+      .then(() => {
+
+        return expect(fetch(`http://${MOCK_SERVER_HOST}:${MOCK_SERVER_PORT}/users`, {
+          method: 'POST',
+          body: testPayload,
+          headers: {
+            // TODO: Remove when URLSearchParams support is implemented
+            'content-type': 'application/x-www-form-urlencoded;charset=UTF-8',
+          }
+        }))
+          .to.be.fulfilled.then((response) => {
+
+            expect(response)
+              .to.be.an.instanceof(Response);
+            expect(response._bodyText)
+              .to.eql(expectedResponseBody);
+
+            return expect(client
+              .verify({
+                method: 'POST',
+                path: '/users',
+                headers: [
+                  {
+                    name: 'content-type',
+                    values: [ 'application/x-www-form-urlencoded;charset=UTF-8' ],
+                  },
+                  {
+                    name: 'content-length',
+                    values: [ '19' ],
+                  },
+                  {
+                    name: 'accept',
+                    values: [ '*/*' ],
+                  },
+                  {
+                    name: 'user-agent',
+                    values: [ `farfetched/${ require('../../package.json').version }` ],
+                  },
+                  {
+                    name: 'host',
+                    values: [ `${MOCK_SERVER_HOST}:${MOCK_SERVER_PORT}` ],
+                  },
+                ],
+                body: {
+                  type: 'STRING',
+                  value: 'id=6&name=charizard',
                 },
                 keepAlive: true,
                 secure: false,
