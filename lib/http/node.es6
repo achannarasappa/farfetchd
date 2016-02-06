@@ -37,12 +37,18 @@ const httpNode = (request) => {
 
   return new Promise((resolve, reject) => {
 
-    let data = '';
+    let data = [];
     const req = client.request(options, (res) => {
 
-      res.on('data', (chunk) => (data += chunk));
+      res.on('data', (chunk) => data.push(new Buffer(chunk)));
 
-      res.on('end', () => resolve(new Response(data)));
+      res.on('end', () => {
+
+        const body = Buffer.concat(data).toString();
+
+        return resolve(new Response(body))
+
+      });
 
     });
 
