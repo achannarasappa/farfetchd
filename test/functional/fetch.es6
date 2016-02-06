@@ -265,4 +265,9 @@ describe('fetch', function() {
 
   it('should send any user headers with a request');
 
+  it('should decompress a response based on the content-encoding header');
+
+  // PROPOSAL: https://github.com/whatwg/fetch/issues/180
+  it('should timeout with a termination reason of timeout ');
+
 });
