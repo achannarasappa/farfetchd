@@ -20,7 +20,7 @@ describe('fetch', function() {
   before(() => {
 
     return mockServer.start_mockserver({
-      serverPort: 1080,
+      serverPort: MOCK_SERVER_PORT,
     })
 
   });
@@ -45,6 +45,7 @@ describe('fetch', function() {
         name: 'charmander',
       },
     ]);
+    const testUrl = `http://${MOCK_SERVER_HOST}:${MOCK_SERVER_PORT}/users`;
 
     return client
       .mockAnyResponse({
@@ -59,13 +60,31 @@ describe('fetch', function() {
       })
       .then(() => {
 
-        return expect(fetch(`http://${MOCK_SERVER_HOST}:${MOCK_SERVER_PORT}/users`))
+        return expect(fetch(testUrl))
           .to.be.fulfilled.then((response) => {
 
             expect(response)
               .to.be.an.instanceof(Response);
             expect(response._bodyText)
               .to.eql(expectedResponseBody);
+            expect(response.status)
+              .to.eql(200);
+            expect(response.statusText)
+              .to.eql('OK');
+            expect(response.ok)
+              .to.eql(true);
+            expect(response.headers)
+              .to.be.an.instanceof(Headers);
+            expect(response.headers.map)
+              .to.eql({
+                connection: [ 'keep-alive' ],
+                'content-length': [ '30' ],
+                'content-type': [ 'text/plain' ],
+              });
+            expect(response.url)
+              .to.eql(testUrl);
+            expect(response.urlList)
+              .to.eql([ testUrl ]);
 
             return expect(client
               .verify({
@@ -268,6 +287,6 @@ describe('fetch', function() {
   it('should decompress a response based on the content-encoding header');
 
   // PROPOSAL: https://github.com/whatwg/fetch/issues/180
-  it('should timeout with a termination reason of timeout ');
+  it('should timeout with a termination reason of timeout');
 
 });
