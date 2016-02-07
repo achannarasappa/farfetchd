@@ -111,11 +111,11 @@ describe('Response', () => {
     it('should throw an error if init.statusMessage is not a string or undefined', () => {
 
       expect(() => new Response('', {
-        statusMessage: true,
+        statusText: true,
       }))
         .to.throw(Error, 'Response init.statusMessage must be a string');
       expect(() => new Response('', {
-        statusMessage: 'OK',
+        statusText: 'OK',
       }))
         .to.not.throw();
 
@@ -183,7 +183,7 @@ describe('Response', () => {
 
       const testResponse = new Response('', {
         status: 201,
-        statusMessage: 'Created',
+        statusText: 'Created',
       });
 
       expect(testResponse.clone())
