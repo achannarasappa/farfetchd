@@ -4,7 +4,7 @@ import Headers from './headers';
 
 const initKeys = [
   'status',
-  'statusMessage',
+  'statusText',
   'type',
   'cacheState',
   'httpsState',
@@ -20,7 +20,7 @@ class Response extends Body {
 
     const defaults = {
       status: 200,
-      statusMessage: 'OK',
+      statusText: 'OK',
       type: 'default',
       cacheState: 'none',
       httpsState: 'none',
@@ -38,8 +38,8 @@ class Response extends Body {
     if (!_.isString(init.type) && !_.isUndefined(init.type))
       throw new Error('Response init.type must be a string');
 
-    if (!_.isString(init.statusMessage) && !_.isUndefined(init.statusMessage))
-      throw new Error('Response init.statusMessage must be a string');
+    if (!_.isString(init.statusText) && !_.isUndefined(init.statusText))
+      throw new Error('Response init.statusText must be a string');
 
     if (!_.isArray(init.urlList) && !_.isUndefined(init.urlList))
       throw new Error('Response init.urlList must be an array');
@@ -82,7 +82,7 @@ class Response extends Body {
     return new Response('', {
       type: 'error',
       status: 0,
-      statusMessage: 'Network Error',
+      statusText: 'Network Error',
     })
 
   }
