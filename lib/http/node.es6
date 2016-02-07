@@ -1,4 +1,4 @@
-import { http, https } from 'follow-redirects';
+import { http, https } from '../../../follow-redirects';
 import { Promise } from 'es6-promise';
 import { default as parseUrl } from 'url-parse';
 import FormData from 'isomorphic-form-data';
@@ -31,6 +31,7 @@ const httpNode = (request) => {
     hostname,
     port,
     auth,
+    pathname,
     path: pathname,
     headers: getHeaders(request),
   };
@@ -46,7 +47,12 @@ const httpNode = (request) => {
 
         const body = Buffer.concat(data).toString();
 
-        return resolve(new Response(body))
+        return resolve(new Response(body, {
+          urlList: _.reverse(res.fetchedUrls),
+          status: res.statusCode,
+          statusText: res.statusMessage,
+          headers: res.headers,
+        }))
 
       });
 
