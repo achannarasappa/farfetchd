@@ -43,9 +43,10 @@ describe('fetch', function() {
       {
         id: 4,
         name: 'charmander',
+        type: 'fire',
       },
     ]);
-    const testUrl = `http://${MOCK_SERVER_HOST}:${MOCK_SERVER_PORT}/users`;
+    const testUrl = `http://${MOCK_SERVER_HOST}:${MOCK_SERVER_PORT}/users?include=["type"]#title`;
 
     return client
       .mockAnyResponse({
@@ -78,7 +79,7 @@ describe('fetch', function() {
             expect(response.headers.map)
               .to.eql({
                 connection: [ 'keep-alive' ],
-                'content-length': [ '30' ],
+                'content-length': [ '44' ],
                 'content-type': [ 'text/plain' ],
               });
             expect(response.url)

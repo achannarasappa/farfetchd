@@ -23,6 +23,8 @@ const httpNode = (request) => {
     port,
     auth,
     pathname,
+    query,
+    hash,
   } = parseUrl(request.url);
   const client = protocol === 'https:' ? https : http;
   const options = {
@@ -32,7 +34,7 @@ const httpNode = (request) => {
     port,
     auth,
     pathname,
-    path: pathname,
+    path: pathname + query + hash,
     headers: getHeaders(request),
   };
 
