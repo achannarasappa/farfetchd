@@ -327,9 +327,66 @@ describe('fetch', function() {
     
   });
 
-  it('should make a DELETE request to the input url');
+  it('should handle error responses', () => {
 
-  it('should handle error responses');
+    const testUrl = `http://${MOCK_SERVER_HOST}:${MOCK_SERVER_PORT}/users/6`;
+
+    return expect(fetch(testUrl, {
+      method: 'DELETE',
+    }))
+      .to.be.fulfilled.then((response) => {
+
+        expect(response)
+          .to.be.an.instanceof(Response);
+        expect(response._bodyText)
+          .to.eql('');
+        expect(response.status)
+          .to.eql(404);
+        expect(response.statusText)
+          .to.eql('Not Found');
+        expect(response.ok)
+          .to.eql(false);
+        expect(response.headers)
+          .to.be.an.instanceof(Headers);
+        expect(response.headers.map)
+          .to.eql({
+            connection: [ 'keep-alive' ],
+            'content-length': [ '0' ],
+          });
+        expect(response.url)
+          .to.eql(testUrl);
+        expect(response.urlList)
+          .to.eql([ testUrl ]);
+
+        return expect(client
+          .verify({
+            method: 'DELETE',
+            path: '/users/6',
+            headers: [
+              {
+                name: 'content-length',
+                values: [ '0' ],
+              },
+              {
+                name: 'accept',
+                values: [ '*/*' ],
+              },
+              {
+                name: 'user-agent',
+                values: [ `farfetched/${ require('../../package.json').version }` ],
+              },
+              {
+                name: 'host',
+                values: [ `${MOCK_SERVER_HOST}:${MOCK_SERVER_PORT}` ],
+              },
+            ],
+            keepAlive: true,
+            secure: false,
+          })).to.be.fulfilled
+
+      });
+    
+  });
 
   it('should return a list of urls visited through redirects');
 
