@@ -271,13 +271,65 @@ describe('fetch', function() {
 
   });
 
-  it('should make a PUT request to the input url with a payload');
+  it('should make a HEAD request to the input url', () => {
 
-  it('should make a PATCH request to the input url with a payload');
+    return client
+      .mockAnyResponse({
+        httpRequest: {
+          method: 'HEAD',
+          path: '/users',
+        },
+        httpResponse: {
+          statusCode: 200,
+        },
+      })
+      .then(() => {
 
-  it('should make a HEAD request to the input url');
+        return expect(fetch(`http://${MOCK_SERVER_HOST}:${MOCK_SERVER_PORT}/users`, {
+          method: 'HEAD',
+        }))
+          .to.be.fulfilled.then((response) => {
+
+            expect(response)
+              .to.be.an.instanceof(Response);
+            expect(response._bodyText)
+              .to.eql('');
+
+            return expect(client
+              .verify({
+                method: 'HEAD',
+                path: '/users',
+                headers: [
+                  {
+                    name: 'content-length',
+                    values: [ '0' ],
+                  },
+                  {
+                    name: 'accept',
+                    values: [ '*/*' ],
+                  },
+                  {
+                    name: 'user-agent',
+                    values: [ `farfetched/${ require('../../package.json').version }` ],
+                  },
+                  {
+                    name: 'host',
+                    values: [ `${MOCK_SERVER_HOST}:${MOCK_SERVER_PORT}` ],
+                  },
+                ],
+                keepAlive: true,
+                secure: false,
+              })).to.be.fulfilled
+
+          });
+
+      })
+    
+  });
 
   it('should make a DELETE request to the input url');
+
+  it('should handle error responses');
 
   it('should return a list of urls visited through redirects');
 
