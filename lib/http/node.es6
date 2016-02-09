@@ -33,7 +33,6 @@ const httpNode = (request) => {
     hostname,
     port,
     auth,
-    pathname,
     path: pathname + query + hash,
     headers: getHeaders(request),
   };
