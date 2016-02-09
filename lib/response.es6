@@ -63,11 +63,15 @@ class Response extends Body {
 
     this.headerList  = this.headers.map;
 
-    if (_.isString(init.url))
-      this.url = init.url;
+    if (_.isString(init.url) && !_.isArray(init.urlList))
+      this.url = decodeURIComponent(init.url);
 
-    if (_.isArray(init.urlList))
-      this.url = _.last(init.urlList);
+    if (_.isArray(init.urlList)) {
+
+      this.urlList = _.map(init.urlList, decodeURIComponent);
+      this.url = _.last(this.urlList);
+
+    }
 
   }
 

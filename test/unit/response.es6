@@ -75,6 +75,27 @@ describe('Response', () => {
 
     });
 
+    it('should decode urls', () => {
+
+      const testUrl = 'http://example.com%3Fredirect%3Dtrue%23title';
+      const testUrlList = [
+        testUrl,
+      ];
+      const expectedUrl = 'http://example.com?redirect=true#title';
+
+      expect(new Response('', {
+        urlList: testUrlList,
+      }))
+        .to.have.property('url')
+        .that.eqls(expectedUrl);
+      expect(new Response('', {
+        url: testUrl,
+      }))
+        .to.have.property('url')
+        .that.eqls(expectedUrl);
+
+    });
+
     it('should throw an error if init is defined but not an object', () => {
 
       expect(() => new Response('', true))
@@ -108,12 +129,12 @@ describe('Response', () => {
 
     });
 
-    it('should throw an error if init.statusMessage is not a string or undefined', () => {
+    it('should throw an error if init.statusText is not a string or undefined', () => {
 
       expect(() => new Response('', {
         statusText: true,
       }))
-        .to.throw(Error, 'Response init.statusMessage must be a string');
+        .to.throw(Error, 'Response init.statusText must be a string');
       expect(() => new Response('', {
         statusText: 'OK',
       }))
