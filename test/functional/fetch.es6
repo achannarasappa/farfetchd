@@ -62,7 +62,11 @@ describe('fetch', function() {
       })
       .then(() => {
 
-        return expect(fetch(testUrl))
+        return expect(fetch(testUrl, {
+          headers: {
+            'Accept-Charset': 'utf-8',
+          }
+        }))
           .to.be.fulfilled.then((response) => {
 
             expect(response)
@@ -93,6 +97,10 @@ describe('fetch', function() {
                 method: 'GET',
                 path: '/users',
                 headers: [
+                  {
+                    name: 'Accept-Charset',
+                    values: [ 'utf-8' ],
+                  },
                   {
                     name: 'Content-Length',
                     values: [ '0' ],
@@ -421,10 +429,6 @@ describe('fetch', function() {
       })
 
   });
-
-  it('should use the native promise implementation if one exists');
-
-  it('should send user headers with a request');
 
   it('should decompress a response based on the content-encoding header');
 
