@@ -6,9 +6,11 @@ import { mockServerClient } from 'mockserver-client';
 import { default as chai, expect } from 'chai';
 import { default as chaiAsPromised } from 'chai-as-promised';
 import { default as express } from 'express';
+import { default as compression } from 'compression';
 
 const MOCK_SERVER_HOST = 'localhost';
 const MOCK_SERVER_PORT = 1080;
+const EXPRESS_SERVER_PORT = 1081;
 
 chai.use(chaiAsPromised);
 
@@ -399,6 +401,7 @@ describe('fetch', function() {
 
   it('should return a list of urls visited through redirects', () => {
 
+    const expectedResponseBody = 'end redirect';
     const redirect = (count) => [ `/url${ count }`, (req, res) => res.redirect(`/url${ count + 1 }`) ];
     const app = express();
 
@@ -407,23 +410,23 @@ describe('fetch', function() {
     app.get(...redirect(3));
     app.get('/url4', (req, res) => {
 
-      res.send('end redirect');
+      res.send(expectedResponseBody);
       
     });
-    const server = app.listen(8080);
+    const server = app.listen(EXPRESS_SERVER_PORT);
 
-    return expect(fetch('http://localhost:8080/url1'))
+    return expect(fetch(`http://localhost:${ EXPRESS_SERVER_PORT }/url1`))
       .to.be.fulfilled.then((response) => {
 
         expect(response.urlList)
           .to.eql([
-            'http://localhost:8080/url1',
-            'http://localhost:8080/url2',
-            'http://localhost:8080/url3',
-            'http://localhost:8080/url4',
+            `http://localhost:${ EXPRESS_SERVER_PORT }/url1`,
+            `http://localhost:${ EXPRESS_SERVER_PORT }/url2`,
+            `http://localhost:${ EXPRESS_SERVER_PORT }/url3`,
+            `http://localhost:${ EXPRESS_SERVER_PORT }/url4`,
           ]);
         expect(response._bodyInit)
-          .to.eql('end redirect');
+          .to.eql(expectedResponseBody);
         return server.close();
 
       })
