@@ -5,6 +5,7 @@ import { default as mockServer } from 'mockserver-grunt';
 import { mockServerClient } from 'mockserver-client';
 import { default as chai, expect } from 'chai';
 import { default as chaiAsPromised } from 'chai-as-promised';
+import { default as express } from 'express';
 
 const MOCK_SERVER_HOST = 'localhost';
 const MOCK_SERVER_PORT = 1080;
@@ -388,11 +389,42 @@ describe('fetch', function() {
     
   });
 
-  it('should return a list of urls visited through redirects');
+  it('should return a list of urls visited through redirects', () => {
+
+    const redirect = (count) => [ `/url${ count }`, (req, res) => res.redirect(`/url${ count + 1 }`) ];
+    const app = express();
+
+    app.get(...redirect(1));
+    app.get(...redirect(2));
+    app.get(...redirect(3));
+    app.get('/url4', (req, res) => {
+
+      res.send('end redirect');
+      
+    });
+    const server = app.listen(8080);
+
+    return expect(fetch('http://localhost:8080/url1'))
+      .to.be.fulfilled.then((response) => {
+
+        expect(response.urlList)
+          .to.eql([
+            'http://localhost:8080/url1',
+            'http://localhost:8080/url2',
+            'http://localhost:8080/url3',
+            'http://localhost:8080/url4',
+          ]);
+        expect(response._bodyInit)
+          .to.eql('end redirect');
+        return server.close();
+
+      })
+
+  });
 
   it('should use the native promise implementation if one exists');
 
-  it('should send any user headers with a request');
+  it('should send user headers with a request');
 
   it('should decompress a response based on the content-encoding header');
 
