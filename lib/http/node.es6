@@ -1,9 +1,17 @@
 import { http, https } from '../../../follow-redirects';
+import { default as zlib } from 'zlib';
 import { Promise } from 'es6-promise';
 import { default as parseUrl } from 'url-parse';
 import FormData from 'isomorphic-form-data';
 import { default as _ } from 'lodash';
 import Response from '../response';
+import Headers from '../headers';
+
+const contentEncodings = [
+  'gzip',
+  'compress',
+  'deflate',
+];
 
 const getHeaders = (request) => {
 
@@ -12,6 +20,17 @@ const getHeaders = (request) => {
     .mapKeys((value, key) => key.toLowerCase())
     .thru((headers) => _.isUndefined(request._bodyFormData) ? headers : _.assign({}, headers, request._bodyFormData.getHeaders()))
     .value()
+
+};
+
+const getBody = (headers, data) => {
+
+  const buffer = Buffer.concat(data);
+
+  if (_.has(headers.map, 'content-encoding') && _.intersection(contentEncodings, headers.map['content-encoding']).length > 0)
+    return zlib.unzipSync(buffer).toString();
+
+  return buffer.toString();
 
 };
 
@@ -46,13 +65,14 @@ const httpNode = (request) => {
 
       res.on('end', () => {
 
-        const body = Buffer.concat(data).toString();
+        const headers = new Headers(res.headers);
+        const body = getBody(headers, data);
 
         return resolve(new Response(body, {
           urlList: _.reverse(res.fetchedUrls),
           status: res.statusCode,
           statusText: res.statusMessage,
-          headers: res.headers,
+          headers,
         }))
 
       });

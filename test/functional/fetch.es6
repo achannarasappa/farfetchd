@@ -6,7 +6,7 @@ import { mockServerClient } from 'mockserver-client';
 import { default as chai, expect } from 'chai';
 import { default as chaiAsPromised } from 'chai-as-promised';
 import { default as express } from 'express';
-import { default as compression } from 'compression';
+import { default as zlib } from 'zlib';
 
 const MOCK_SERVER_HOST = 'localhost';
 const MOCK_SERVER_PORT = 1080;
@@ -433,7 +433,30 @@ describe('fetch', function() {
 
   });
 
-  it('should decompress a response based on the content-encoding header');
+  it('should decompress a response based on the content-encoding header', () => {
+
+    const expectedResponseBody = 'test compressed body';
+    const gzippedBody = zlib.gzipSync(expectedResponseBody);
+    const app = express();
+    app.get('/compressed', (req, res) => {
+
+      res.set('Content-Encoding', 'gzip,deflate');
+      res.send(gzippedBody);
+
+    });
+    const server = app.listen(EXPRESS_SERVER_PORT);
+
+    return expect(fetch(`http://localhost:${ EXPRESS_SERVER_PORT }/compressed`))
+      .to.be.fulfilled.then((response) => {
+
+        expect(response._bodyInit)
+          .to.eql(expectedResponseBody);
+
+        return server.close();
+
+      })
+
+  });
 
   // PROPOSAL: https://github.com/whatwg/fetch/issues/180
   it('should timeout with a termination reason of timeout');
