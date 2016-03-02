@@ -1,4 +1,4 @@
-import { http, https } from '../../../follow-redirects';
+import { http, https } from 'follow-redirects';
 import { default as zlib } from 'zlib';
 import { Promise } from 'es6-promise';
 import { default as parseUrl } from 'url-parse';
@@ -46,13 +46,15 @@ const httpNode = (request) => {
     hash,
   } = parseUrl(request.url);
   const client = protocol === 'https:' ? https : http;
+  const path = pathname + query + hash;
   const options = {
     method: request.method,
     protocol,
     hostname,
     port,
     auth,
-    path: pathname + query + hash,
+    pathname: path,
+    path,
     headers: getHeaders(request),
   };
 
