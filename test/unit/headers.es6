@@ -123,6 +123,21 @@ describe('Headers', () => {
 
     });
 
+    it.only('should split header values on commas', () => {
+
+      const testHeadersInstance = new Headers();
+      testHeadersInstance.append('Content-Encoding', 'gzip,deflate');
+
+      expect(testHeadersInstance)
+        .to.have.property('map')
+        .to.have.property('content-encoding')
+        .that.eqls([
+          'gzip',
+          'deflate',
+        ]);
+
+    })
+
   });
 
   describe('delete', () => {
