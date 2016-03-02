@@ -37,7 +37,10 @@ class Headers {
     if (_.isArray(value))
       this.map[normalizedName].push(..._.map(value, castString));
 
-    if (!_.isArray(value))
+    if (_.isString(value) && _.includes(value, ','))
+      this.map[normalizedName].push(...value.split(','));
+
+    if (!_.isArray(value) && !_.includes(value, ','))
       this.map[normalizedName].push(castString(value));
 
   }
