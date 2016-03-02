@@ -123,7 +123,7 @@ describe('Headers', () => {
 
     });
 
-    it.only('should split header values on commas', () => {
+    it('should split header values on commas', () => {
 
       const testHeadersInstance = new Headers();
       testHeadersInstance.append('Content-Encoding', 'gzip,deflate');
