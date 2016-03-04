@@ -459,7 +459,7 @@ describe('fetch', function() {
   });
 
   // PROPOSAL: https://github.com/whatwg/fetch/issues/180
-  it.only('should return a rejected promise if the timeout is exceeded', () => {
+  it('should return a rejected promise if the timeout is exceeded', () => {
 
     const expectedResponseBody = 'test timeout body';
     const app = express();
