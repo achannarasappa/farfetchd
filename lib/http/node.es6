@@ -61,6 +61,7 @@ const httpNode = (request) => {
   return new Promise((resolve, reject) => {
 
     let data = [];
+    let timer;
     const req = client.request(options, (res) => {
 
       res.on('data', (chunk) => data.push(new Buffer(chunk)));
@@ -69,6 +70,9 @@ const httpNode = (request) => {
 
         const headers = new Headers(res.headers);
         const body = getBody(headers, data);
+
+        if (request.timeout)
+          clearTimeout(timer);
 
         return resolve(new Response(body, {
           urlList: _.reverse(res.fetchedUrls),
@@ -87,6 +91,17 @@ const httpNode = (request) => {
     req.on('error', (error) => reject(error));
 
     req.end(request._bodyText);
+
+    if (request.timeout) {
+
+      timer = setTimeout(() => {
+
+        req.abort();
+
+        return reject(new Error('Fetch timeout exceeded'))
+
+      }, request.timeout);
+    }
 
   })
 

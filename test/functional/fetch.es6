@@ -459,6 +459,31 @@ describe('fetch', function() {
   });
 
   // PROPOSAL: https://github.com/whatwg/fetch/issues/180
-  it('should timeout with a termination reason of timeout');
+  it.only('should return a rejected promise if the timeout is exceeded', () => {
+
+    const expectedResponseBody = 'test timeout body';
+    const app = express();
+    app.get('/timeout', (req, res) => {
+
+      setTimeout(() => res.send(expectedResponseBody), 5000);
+
+    });
+    const server = app.listen(EXPRESS_SERVER_PORT);
+
+    return expect(fetch(`http://localhost:${ EXPRESS_SERVER_PORT }/timeout`, {
+      timeout: 500,
+    }))
+      .to.be.rejected.then((error) => {
+
+        expect(error)
+          .to.be.an.instanceof(Error);
+        expect(error.message)
+          .to.eql('Fetch timeout exceeded');
+
+        return server.close();
+
+      })
+
+  });
 
 });
