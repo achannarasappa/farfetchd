@@ -37,6 +37,7 @@ const defaultProperties = {
   referrer: 'client',
   redirect: 'manual',
   cacheMode: 'default',
+  timeout: 0,
 };
 
 const getBody = (input, init) => {
