@@ -1,24 +1,21 @@
 module.exports = function(config) {
   config.set({
-    basePath: '',
     frameworks: [
       'mocha',
       'chai',
       'chai-as-promised',
+      'sinon',
+      'sinon-chai',
       'browserify',
     ],
     files: [
       'lib/**/*.js',
-      'test/**/*.js',
+      'test/unit/**/*.js',
     ],
     exclude: [],
     preprocessors: {
-      'lib/**/*.js': [
-        'browserify',
-      ],
-      'test/**/*.js': [
-        'browserify',
-      ],
+      'lib/**/*.js': 'browserify',
+      'test/unit/**/*.js': 'browserify',
     },
     browserify: {
       debug: true,
@@ -29,5 +26,6 @@ module.exports = function(config) {
     browsers: [
       'PhantomJS',
     ],
+    singleRun: true,
   });
 };
