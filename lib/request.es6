@@ -76,7 +76,7 @@ class Request extends Body {
     if (_.isString(body))
       defaultHeaders['Content-Length'] = body.length;
 
-    if (body instanceof FormData)
+    if (body instanceof FormData && typeof body.getLengthSync === 'function')
       defaultHeaders['Content-Length'] = body.getLengthSync();
 
     if (isInputRequestInstance && !init.headers)
