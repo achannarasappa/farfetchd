@@ -10,12 +10,10 @@ module.exports = function(config) {
     ],
     files: [
       'lib/**/*.js',
-      'test/unit/**/*.js',
     ],
     exclude: [],
     preprocessors: {
       'lib/**/*.js': 'browserify',
-      'test/unit/**/*.js': 'browserify',
     },
     browserify: {
       debug: true,

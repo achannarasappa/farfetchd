@@ -55,21 +55,26 @@ gulp.task('bundle', [ 'compile' ], function () {
 });
 
 gulp.task('test', function(done) {
-  runSequence([ 'test-client', 'test-server', ], done)
+  runSequence([ 'test-unit-client', 'test-unit-server', ], done)
 });
 
-gulp.task('test-client', function(done) {
+gulp.task('test-unit-client', function(done) {
 
   new Karma({
     configFile: __dirname + '/karma.conf.js',
-    singleRun: true
+    files: [
+      'test/unit/**/*.js',
+    ],
+    preprocessors: {
+      'test/unit/**/*.js': 'browserify',
+    },
   }, () => done()).start();
 
 });
 
-gulp.task('test-server', function() {
+gulp.task('test-unit-server', function() {
 
-  return gulp.src(['test/**/*.js'], { read: false })
+  return gulp.src(['test/unit/**/*.js'], { read: false })
     .pipe(mocha({
       reporter: 'spec',
     }));

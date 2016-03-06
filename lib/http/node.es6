@@ -2,7 +2,6 @@ import { http, https } from 'follow-redirects';
 import { default as zlib } from 'zlib';
 import { Promise } from 'es6-promise';
 import { default as parseUrl } from 'url-parse';
-import FormData from 'isomorphic-form-data';
 import { default as _ } from 'lodash';
 import Response from '../response';
 import Headers from '../headers';
