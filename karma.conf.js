@@ -25,5 +25,6 @@ module.exports = function(config) {
       'PhantomJS',
     ],
     singleRun: true,
+    autoWatch: false,
   });
 };
