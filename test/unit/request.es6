@@ -171,7 +171,7 @@ describe('Request', () => {
     });
 
     // https://github.com/whatwg/fetch/blob/010dd7ad85d9bb893c7bbb03e2cbb800068da18e/Overview.html#L2529
-    it.only(`should default the 'Content-Length' header to the body length`, () => {
+    it(`should default the 'Content-Length' header to the body length`, () => {
 
       const testPayload = new FormData();
       testPayload.append('id', '5');

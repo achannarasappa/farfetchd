@@ -80,3 +80,12 @@ gulp.task('test-unit-server', function() {
     }));
 
 });
+
+gulp.task('test-functional-server', function() {
+
+  return gulp.src(['test/functional/**/*.js'], { read: false })
+    .pipe(mocha({
+      reporter: 'spec',
+    }));
+
+});
