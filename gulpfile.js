@@ -63,7 +63,7 @@ gulp.task('test-client', function(done) {
   new Karma({
     configFile: __dirname + '/karma.conf.js',
     singleRun: true
-  }, done).start();
+  }, () => done()).start();
 
 });
 
