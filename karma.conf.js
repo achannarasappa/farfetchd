@@ -20,6 +20,11 @@ module.exports = function(config) {
       transform: [
         'babelify',
       ],
+      configure: function(bundle) {
+        bundle.once('prebundle', function() {
+          bundle.require('http-browserify', { expose: 'http' });
+        });
+      }
     },
     browsers: [
       'Chrome_small',

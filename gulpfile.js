@@ -11,7 +11,8 @@ var buffer = require('vinyl-buffer');
 var Karma = require('karma').Server;
 var spawn = require('child_process').spawn;
 var runSequence = require('run-sequence');
-var server;
+var mockServer = require('mockserver-grunt');
+var configuration = require('./test/configuration')
 
 gulp.task('default', function() {
 });
@@ -54,9 +55,19 @@ gulp.task('bundle', [ 'compile' ], function () {
 
 });
 
-gulp.task('test', function(done) {
-  runSequence([ 'test-unit-client', 'test-unit-server', ], done)
-});
+gulp.task('server-mockserver-start', function() {
+
+  return mockServer.start_mockserver({
+    serverPort: configuration.MOCK_SERVER_PORT,
+  })
+
+})
+
+gulp.task('server-mockserver-stop', function() {
+
+  return mockServer.stop_mockserver();
+
+})
 
 gulp.task('test-unit-client', function(done) {
 
@@ -67,6 +78,20 @@ gulp.task('test-unit-client', function(done) {
     ],
     preprocessors: {
       'test/unit/**/*.js': 'browserify',
+    },
+  }, () => done()).start();
+
+});
+
+gulp.task('test-functional-client', function(done) {
+
+  new Karma({
+    configFile: __dirname + '/karma.conf.js',
+    files: [
+      'test/functional/**/*.js',
+    ],
+    preprocessors: {
+      'test/functional/**/*.js': 'browserify',
     },
   }, () => done()).start();
 
@@ -87,5 +112,28 @@ gulp.task('test-functional-server', function() {
     .pipe(mocha({
       reporter: 'spec',
     }));
+
+});
+
+gulp.task('test-functional', function(done) {
+
+  runSequence(
+    'server-mockserver-start',
+    'test-functional-client',
+    //'test-functional-server',
+    'server-mockserver-stop',
+    done
+  )
+
+});
+
+gulp.task('test', function(done) {
+
+  runSequence(
+    'test-unit-client',
+    'test-unit-server',
+    'test-functional',
+    done
+  )
 
 });
