@@ -5,7 +5,7 @@ import { mockServerClient } from 'mockserver-client';
 import { default as chai, expect } from 'chai';
 import { default as chaiAsPromised } from 'chai-as-promised';
 //import { default as express } from 'express';
-import { default as zlib } from 'zlib';
+//import { default as zlib } from 'zlib';
 import { MOCK_SERVER_HOST, MOCK_SERVER_PORT, EXPRESS_SERVER_PORT } from '../configuration';
 
 chai.use(chaiAsPromised);
@@ -381,91 +381,52 @@ describe('fetch', function() {
     
   });
 
-  //it('should return a list of urls visited through redirects', () => {
-  //
-  //  const expectedResponseBody = 'end redirect';
-  //  const redirect = (count) => [ `/url${ count }`, (req, res) => res.redirect(`/url${ count + 1 }`) ];
-  //  const app = express();
-  //
-  //  app.get(...redirect(1));
-  //  app.get(...redirect(2));
-  //  app.get(...redirect(3));
-  //  app.get('/url4', (req, res) => {
-  //
-  //    res.send(expectedResponseBody);
-  //
-  //  });
-  //  const server = app.listen(EXPRESS_SERVER_PORT);
-  //
-  //  return expect(fetch(`http://localhost:${ EXPRESS_SERVER_PORT }/url1`))
-  //    .to.be.fulfilled.then((response) => {
-  //
-  //      expect(response.urlList)
-  //        .to.eql([
-  //          `http://localhost:${ EXPRESS_SERVER_PORT }/url1`,
-  //          `http://localhost:${ EXPRESS_SERVER_PORT }/url2`,
-  //          `http://localhost:${ EXPRESS_SERVER_PORT }/url3`,
-  //          `http://localhost:${ EXPRESS_SERVER_PORT }/url4`,
-  //        ]);
-  //      expect(response._bodyInit)
-  //        .to.eql(expectedResponseBody);
-  //      return server.close();
-  //
-  //    })
-  //
-  //});
-  //
-  //it('should decompress a response based on the content-encoding header', () => {
-  //
-  //  const expectedResponseBody = 'test compressed body';
-  //  const gzippedBody = zlib.gzipSync(expectedResponseBody);
-  //  const app = express();
-  //  app.get('/compressed', (req, res) => {
-  //
-  //    res.set('Content-Encoding', 'gzip,deflate');
-  //    res.send(gzippedBody);
-  //
-  //  });
-  //  const server = app.listen(EXPRESS_SERVER_PORT);
-  //
-  //  return expect(fetch(`http://localhost:${ EXPRESS_SERVER_PORT }/compressed`))
-  //    .to.be.fulfilled.then((response) => {
-  //
-  //      expect(response._bodyInit)
-  //        .to.eql(expectedResponseBody);
-  //
-  //      return server.close();
-  //
-  //    })
-  //
-  //});
-  //
-  //// PROPOSAL: https://github.com/whatwg/fetch/issues/180
-  //it('should return a rejected promise if the timeout is exceeded', () => {
-  //
-  //  const expectedResponseBody = 'test timeout body';
-  //  const app = express();
-  //  app.get('/timeout', (req, res) => {
-  //
-  //    setTimeout(() => res.send(expectedResponseBody), 5000);
-  //
-  //  });
-  //  const server = app.listen(EXPRESS_SERVER_PORT);
-  //
-  //  return expect(fetch(`http://localhost:${ EXPRESS_SERVER_PORT }/timeout`, {
-  //    timeout: 500,
-  //  }))
-  //    .to.be.rejected.then((error) => {
-  //
-  //      expect(error)
-  //        .to.be.an.instanceof(Error);
-  //      expect(error.message)
-  //        .to.eql('Fetch timeout exceeded');
-  //
-  //      return server.close();
-  //
-  //    })
-  //
-  //});
+  it('should return a list of urls visited through redirects', () => {
+
+    return expect(fetch(`http://localhost:${ EXPRESS_SERVER_PORT }/redirect_1`))
+      .to.be.fulfilled.then((response) => {
+
+        expect(response.urlList)
+          .to.eql([
+            `http://localhost:${ EXPRESS_SERVER_PORT }/redirect_1`,
+            `http://localhost:${ EXPRESS_SERVER_PORT }/redirect_2`,
+            `http://localhost:${ EXPRESS_SERVER_PORT }/redirect_3`,
+            `http://localhost:${ EXPRESS_SERVER_PORT }/redirect_4`,
+          ]);
+        expect(response._bodyInit)
+          .to.eql('end redirect');
+
+      })
+
+  });
+
+  it('should decompress a response based on the content-encoding header', () => {
+
+    return expect(fetch(`http://localhost:${ EXPRESS_SERVER_PORT }/compression`))
+      .to.be.fulfilled.then((response) => {
+
+        expect(response._bodyInit)
+          .to.eql('test compressed body');
+
+      })
+
+  });
+
+  // PROPOSAL: https://github.com/whatwg/fetch/issues/180
+  it('should return a rejected promise if the timeout is exceeded', () => {
+
+    return expect(fetch(`http://localhost:${ EXPRESS_SERVER_PORT }/timeout`, {
+      timeout: 500,
+    }))
+      .to.be.rejected.then((error) => {
+
+        expect(error)
+          .to.be.an.instanceof(Error);
+        expect(error.message)
+          .to.eql('Fetch timeout exceeded');
+
+      })
+
+  });
 
 });
