@@ -9,7 +9,6 @@ var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var Karma = require('karma').Server;
-var spawn = require('child_process').spawn;
 var runSequence = require('run-sequence');
 var mockServer = require('mockserver-grunt');
 var express = require('express');
@@ -64,13 +63,13 @@ gulp.task('server-mockserver-start', function() {
     serverPort: configuration.MOCK_SERVER_PORT,
   })
 
-})
+});
 
 gulp.task('server-mockserver-stop', function() {
 
   return mockServer.stop_mockserver();
 
-})
+});
 
 gulp.task('server-express-start', function() {
 
@@ -117,13 +116,13 @@ gulp.task('server-express-start', function() {
 
   server = app.listen(configuration.EXPRESS_SERVER_PORT);
 
-})
+});
 
 gulp.task('server-express-stop', function() {
 
   server.close();
 
-})
+});
 
 gulp.task('test-unit-client', function(done) {
 
