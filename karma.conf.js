@@ -34,7 +34,8 @@ module.exports = function(config) {
         base: 'Chrome',
         flags: [
           '--window-size=400,400',
-          '--window-position=-400,0'
+          '--window-position=-400,0',
+          '--disable-web-security',
         ]
       }
     },
