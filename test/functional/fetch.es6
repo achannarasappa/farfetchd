@@ -4,8 +4,6 @@ import qs from 'qs';
 import { mockServerClient } from 'mockserver-client';
 import { default as chai, expect } from 'chai';
 import { default as chaiAsPromised } from 'chai-as-promised';
-//import { default as express } from 'express';
-//import { default as zlib } from 'zlib';
 import { MOCK_SERVER_HOST, MOCK_SERVER_PORT, EXPRESS_SERVER_PORT } from '../configuration';
 
 chai.use(chaiAsPromised);
@@ -22,7 +20,7 @@ describe('fetch', function() {
 
   });
 
-  it('should make a GET request to the input url', () => {
+  it.only('should make a GET request to the input url', () => {
 
     const expectedResponseBody = JSON.stringify([
       {
