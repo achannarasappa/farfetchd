@@ -184,8 +184,8 @@ gulp.task('test-functional', function(done) {
   runSequence(
     'server-express-start',
     'server-mockserver-start',
-    //'test-functional-client',
-    'test-functional-server',
+    'test-functional-client',
+    //'test-functional-server',
     'server-mockserver-stop',
     'server-express-stop',
     done
