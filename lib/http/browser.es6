@@ -1,5 +1,7 @@
 import { Promise } from 'es6-promise';
+import { parse as parseHeaders } from 'get-headers'
 import Response from '../response';
+import Headers from '../headers';
 
 const httpBrowser = (request) => {
 
@@ -9,13 +11,24 @@ const httpBrowser = (request) => {
 
     req.open(request.method, request.url, true);
 
+    _.map(request.headers.map, (value, key) => {
+
+      req.setRequestHeader(key, value.join(','))
+
+    });
+
     req.send();
 
-    req.addEventListener('load', function() {
+    req.addEventListener('load', () => {
 
-      console.log(this.responseText);
+      const headers = new Headers(parseHeaders(req.getAllResponseHeaders()));
 
-      return resolve(new Response(this.responseText));
+      return resolve(new Response(req.responseText, {
+        urlList: [ request.url ],
+        status: req.status,
+        statusText: req.statusText,
+        headers,
+      }));
 
     });
 
