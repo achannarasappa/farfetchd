@@ -1,4 +1,5 @@
 import { default as fetch, Request, Response, Body, Headers } from '../../lib/fetch';
+import { isNode } from '../../lib/util';
 import FormData from 'isomorphic-form-data';
 import qs from 'qs';
 import { mockServerClient } from 'mockserver-client';
@@ -29,7 +30,7 @@ describe('fetch', function() {
         type: 'fire',
       },
     ]);
-    const testUrl = `http://${MOCK_SERVER_HOST}:${MOCK_SERVER_PORT}/users?include=["type"]#title`;
+    const testUrl = `http://${MOCK_SERVER_HOST}:${MOCK_SERVER_PORT}/users?include=["type"]&a=1#title`;
 
     return client
       .mockAnyResponse({
@@ -47,9 +48,45 @@ describe('fetch', function() {
         return expect(fetch(testUrl, {
           headers: {
             'Accept-Charset': 'utf-8',
+            'X-Client': 'farfetched',
           }
         }))
           .to.be.fulfilled.then((response) => {
+
+            // Alternate request verification required for browser code since specific headers
+            // can not be modified due to security restrictions. See:
+            // https://dvcs.w3.org/hg/xhr/raw-file/tip/Overview.html#dom-xmlhttprequest-setrequestheader
+            const headers = isNode() ? [
+              {
+                name: 'Accept-Charset',
+                values: [ 'utf-8' ],
+              },
+              {
+                name: 'X-Client',
+                values: [ 'farfetched' ],
+              },
+              {
+                name: 'Content-Length',
+                values: [ '0' ],
+              },
+              {
+                name: 'Accept',
+                values: [ '*/*' ],
+              },
+              {
+                name: 'User-Agent',
+                values: [ `farfetched/${ require('../../package.json').version }` ],
+              },
+              {
+                name: 'Host',
+                values: [ `${MOCK_SERVER_HOST}:${MOCK_SERVER_PORT}` ],
+              },
+            ] : [
+              {
+                name: 'X-Client',
+                values: [ 'farfetched' ],
+              },
+            ];
 
             expect(response)
               .to.be.an.instanceof(Response);
@@ -74,35 +111,14 @@ describe('fetch', function() {
             expect(response.urlList)
               .to.eql([ testUrl ]);
 
-            return expect(client
-              .verify({
-                method: 'GET',
-                path: '/users',
-                headers: [
-                  {
-                    name: 'Accept-Charset',
-                    values: [ 'utf-8' ],
-                  },
-                  {
-                    name: 'Content-Length',
-                    values: [ '0' ],
-                  },
-                  {
-                    name: 'Accept',
-                    values: [ '*/*' ],
-                  },
-                  {
-                    name: 'User-Agent',
-                    values: [ `farfetched/${ require('../../package.json').version }` ],
-                  },
-                  {
-                    name: 'Host',
-                    values: [ `${MOCK_SERVER_HOST}:${MOCK_SERVER_PORT}` ],
-                  },
-                ],
-                keepAlive: true,
-                secure: false,
-              })).to.be.fulfilled
+              return expect(client
+                .verify({
+                  method: 'GET',
+                  path: '/users',
+                  headers,
+                  keepAlive: true,
+                  secure: false,
+                })).to.be.fulfilled
 
           });
 

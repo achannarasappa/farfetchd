@@ -184,7 +184,7 @@ gulp.task('test-functional', function(done) {
     'server-express-start',
     'server-mockserver-start',
     'test-functional-client',
-    //'test-functional-server',
+    'test-functional-server',
     'server-mockserver-stop',
     'server-express-stop',
     done
