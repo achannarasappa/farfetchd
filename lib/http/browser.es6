@@ -17,7 +17,7 @@ const httpBrowser = (request) => {
 
     });
 
-    req.send(request._bodyFormData);
+    req.send(request._bodyInit);
 
     req.addEventListener('load', () => {
 
