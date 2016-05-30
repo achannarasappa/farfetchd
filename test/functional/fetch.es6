@@ -371,14 +371,6 @@ describe('fetch', function() {
                 name: 'accept',
                 values: [ '*/*' ],
               },
-              {
-                name: 'user-agent',
-                values: [ `farfetched/${ require('../../package.json').version }` ],
-              },
-              {
-                name: 'host',
-                values: [ `${MOCK_SERVER_HOST}:${MOCK_SERVER_PORT}` ],
-              },
             ],
             keepAlive: true,
             secure: false,
@@ -393,13 +385,18 @@ describe('fetch', function() {
     return expect(fetch(`http://localhost:${ EXPRESS_SERVER_PORT }/redirect_1`))
       .to.be.fulfilled.then((response) => {
 
+        const expectedUrlList = isNode() ? [
+          `http://localhost:${ EXPRESS_SERVER_PORT }/redirect_1`,
+          `http://localhost:${ EXPRESS_SERVER_PORT }/redirect_2`,
+          `http://localhost:${ EXPRESS_SERVER_PORT }/redirect_3`,
+          `http://localhost:${ EXPRESS_SERVER_PORT }/redirect_4`,
+        ] : [
+          `http://localhost:${ EXPRESS_SERVER_PORT }/redirect_1`,
+          `http://localhost:${ EXPRESS_SERVER_PORT }/redirect_4`,
+        ];
+
         expect(response.urlList)
-          .to.eql([
-            `http://localhost:${ EXPRESS_SERVER_PORT }/redirect_1`,
-            `http://localhost:${ EXPRESS_SERVER_PORT }/redirect_2`,
-            `http://localhost:${ EXPRESS_SERVER_PORT }/redirect_3`,
-            `http://localhost:${ EXPRESS_SERVER_PORT }/redirect_4`,
-          ]);
+          .to.eql(expectedUrlList);
         expect(response._bodyInit)
           .to.eql('end redirect');
 

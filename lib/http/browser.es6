@@ -24,7 +24,7 @@ const httpBrowser = (request) => {
       const headers = new Headers(parseHeaders(req.getAllResponseHeaders()));
 
       return resolve(new Response(req.responseText, {
-        urlList: [ request.url ],
+        urlList: [ request.url, req.responseURL ],
         status: req.status,
         statusText: req.statusText,
         headers,
