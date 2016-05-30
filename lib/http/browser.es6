@@ -23,12 +23,13 @@ const httpBrowser = (request) => {
     req.addEventListener('load', () => {
 
       const headers = new Headers(parseHeaders(req.getAllResponseHeaders()));
+      const urlList = req.responseURL && request.url === req.responseURL ? [ request.url ] : [ request.url, req.responseURL ] ;
 
       if (request.timeout)
         clearTimeout(timer);
 
       return resolve(new Response(req.responseText, {
-        urlList: [ request.url, req.responseURL ],
+        urlList,
         status: req.status,
         statusText: req.statusText,
         headers,
