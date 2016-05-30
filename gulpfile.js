@@ -98,7 +98,7 @@ gulp.task('server-express-start', function() {
   // Compression endpoint
   app.get('/compression', function(req, res) {
 
-    res.set('Content-Encoding', 'gzip,deflate');
+    res.set('Content-Encoding', 'gzip');
     res.send(gzippedBody);
 
   });
@@ -184,7 +184,7 @@ gulp.task('test-functional', function(done) {
     'server-express-start',
     'server-mockserver-start',
     'test-functional-client',
-    'test-functional-server',
+    //'test-functional-server',
     'server-mockserver-stop',
     'server-express-stop',
     done
