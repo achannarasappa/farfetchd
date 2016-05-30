@@ -30,7 +30,7 @@ describe('fetch', function() {
         type: 'fire',
       },
     ]);
-    const testUrl = `http://${MOCK_SERVER_HOST}:${MOCK_SERVER_PORT}/users?include=["type"]&a=1#title`;
+    const testUrl = `http://${MOCK_SERVER_HOST}:${MOCK_SERVER_PORT}/users?include=["type"]&a=1`;
 
     return client
       .mockAnyResponse({
