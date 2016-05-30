@@ -21,7 +21,7 @@ describe('fetch', function() {
 
   });
 
-  it.only('should make a GET request to the input url', () => {
+  it('should make a GET request to the input url', () => {
 
     const expectedResponseBody = JSON.stringify([
       {
@@ -126,7 +126,7 @@ describe('fetch', function() {
 
   });
 
-  it('should make a POST request to the input url with a multipart/form-data payload', () => {
+  it.only('should make a POST request to the input url with a multipart/form-data payload', () => {
 
     const expectedResponseBody = JSON.stringify({
       id: '5',
@@ -155,6 +155,43 @@ describe('fetch', function() {
         }))
           .to.be.fulfilled.then((response) => {
 
+            const body = isNode() ? {
+              type: 'STRING',
+              value: `--${testPayload.getBoundary()}\r\nContent-Disposition: form-data; name=\"id\"\r\n\r\n5\r\n--${testPayload.getBoundary()}\r\nContent-Disposition: form-data; name=\"name\"\r\n\r\ncharmeleon\r\n--${testPayload.getBoundary()}--\r\n`,
+            } : undefined;
+            const headers = isNode() ? [
+              {
+                name: 'content-type',
+                values: [ `multipart/form-data; boundary=${testPayload.getBoundary()}` ],
+              },
+              {
+                name: 'content-length',
+                values: [ '271' ],
+              },
+              {
+                name: 'accept',
+                values: [ '*/*' ],
+              },
+              {
+                name: 'user-agent',
+                values: [ `farfetched/${ require('../../package.json').version }` ],
+              },
+              {
+                name: 'host',
+                values: [ `${MOCK_SERVER_HOST}:${MOCK_SERVER_PORT}` ],
+              },
+            ] : [
+              {
+                name: 'content-length',
+                values: [ '235' ],
+              },
+              {
+                type: 'REGEX',
+                name: 'content-type',
+                values: [ `multipart/form-data; boundary=----WebKitFormBoundary([a-zA-Z0-9]{16}+)` ],
+              },
+            ];
+
             expect(response)
               .to.be.an.instanceof(Response);
             expect(response._bodyText)
@@ -164,32 +201,8 @@ describe('fetch', function() {
               .verify({
                 method: 'POST',
                 path: '/users',
-                headers: [
-                  {
-                    name: 'content-type',
-                    values: [ `multipart/form-data; boundary=${testPayload.getBoundary()}` ],
-                  },
-                  {
-                    name: 'content-length',
-                    values: [ '271' ],
-                  },
-                  {
-                    name: 'accept',
-                    values: [ '*/*' ],
-                  },
-                  {
-                    name: 'user-agent',
-                    values: [ `farfetched/${ require('../../package.json').version }` ],
-                  },
-                  {
-                    name: 'host',
-                    values: [ `${MOCK_SERVER_HOST}:${MOCK_SERVER_PORT}` ],
-                  },
-                ],
-                body: {
-                  type: 'STRING',
-                  value: `--${testPayload.getBoundary()}\r\nContent-Disposition: form-data; name=\"id\"\r\n\r\n5\r\n--${testPayload.getBoundary()}\r\nContent-Disposition: form-data; name=\"name\"\r\n\r\ncharmeleon\r\n--${testPayload.getBoundary()}--\r\n`,
-                },
+                headers,
+                body,
                 keepAlive: true,
                 secure: false,
               })).to.be.fulfilled
