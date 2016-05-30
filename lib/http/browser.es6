@@ -8,6 +8,7 @@ const httpBrowser = (request) => {
   return new Promise((resolve, reject) => {
 
     const req = new XMLHttpRequest();
+    let timer;
 
     req.open(request.method, request.url, true);
 
@@ -23,6 +24,9 @@ const httpBrowser = (request) => {
 
       const headers = new Headers(parseHeaders(req.getAllResponseHeaders()));
 
+      if (request.timeout)
+        clearTimeout(timer);
+
       return resolve(new Response(req.responseText, {
         urlList: [ request.url, req.responseURL ],
         status: req.status,
@@ -31,6 +35,17 @@ const httpBrowser = (request) => {
       }));
 
     });
+
+    if (request.timeout) {
+
+      timer = setTimeout(() => {
+
+        req.abort();
+
+        return reject(new Error('Fetch timeout exceeded'))
+
+      }, request.timeout);
+    }
 
   })
 
