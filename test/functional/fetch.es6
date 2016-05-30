@@ -126,7 +126,7 @@ describe('fetch', function() {
 
   });
 
-  it.only('should make a POST request to the input url with a multipart/form-data payload', () => {
+  it('should make a POST request to the input url with a multipart/form-data payload', () => {
 
     const expectedResponseBody = JSON.stringify({
       id: '5',
@@ -213,7 +213,7 @@ describe('fetch', function() {
 
   });
 
-  it('should make a POST request to the input url with a application/x-www-form-urlencoded payload', () => {
+  it.only('should make a POST request to the input url with a application/x-www-form-urlencoded payload', () => {
 
     const testObject = {
       id: '6',
@@ -263,18 +263,6 @@ describe('fetch', function() {
                   {
                     name: 'content-length',
                     values: [ '19' ],
-                  },
-                  {
-                    name: 'accept',
-                    values: [ '*/*' ],
-                  },
-                  {
-                    name: 'user-agent',
-                    values: [ `farfetched/${ require('../../package.json').version }` ],
-                  },
-                  {
-                    name: 'host',
-                    values: [ `${MOCK_SERVER_HOST}:${MOCK_SERVER_PORT}` ],
                   },
                 ],
                 body: {
