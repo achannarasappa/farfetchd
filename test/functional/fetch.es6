@@ -213,7 +213,7 @@ describe('fetch', function() {
 
   });
 
-  it.only('should make a POST request to the input url with a application/x-www-form-urlencoded payload', () => {
+  it('should make a POST request to the input url with a application/x-www-form-urlencoded payload', () => {
 
     const testObject = {
       id: '6',
@@ -315,14 +315,6 @@ describe('fetch', function() {
                   {
                     name: 'accept',
                     values: [ '*/*' ],
-                  },
-                  {
-                    name: 'user-agent',
-                    values: [ `farfetched/${ require('../../package.json').version }` ],
-                  },
-                  {
-                    name: 'host',
-                    values: [ `${MOCK_SERVER_HOST}:${MOCK_SERVER_PORT}` ],
                   },
                 ],
                 keepAlive: true,
