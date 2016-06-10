@@ -8,7 +8,7 @@
     "test": "./node_modules/.bin/gulp test",
     "style": "./node_modules/.bin/gulp style",
     "prepublish": "./node_modules/.bin/gulp bundle",
-    "docs": "./node_modules/.bin/gulp docs:serve",
+    "docs": "./node_modules/.bin/gulp docs:serve"
   },
   "repository": {
     "type": "git",
