@@ -5,6 +5,7 @@ var jscs = require('gulp-jscs');
 var gutil = require('gulp-util');
 var uglify = require('gulp-uglify');
 var sourcemaps = require('gulp-sourcemaps');
+var shell = require('gulp-shell')
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
@@ -56,6 +57,10 @@ gulp.task('bundle', [ 'compile' ], function () {
     .pipe(gulp.dest('./dist/'));
 
 });
+
+gulp.task('docs:prepare', shell.task('gitbook install'));
+
+gulp.task('docs:serve', shell.task('gitbook install && gitbook serve'));
 
 gulp.task('test:setup:mockserver:start', function() {
 
