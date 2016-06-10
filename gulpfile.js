@@ -57,7 +57,7 @@ gulp.task('bundle', [ 'compile' ], function () {
 
 });
 
-gulp.task('server-mockserver-start', function() {
+gulp.task('test:setup:mockserver:start', function() {
 
   return mockServer.start_mockserver({
     serverPort: configuration.MOCK_SERVER_PORT,
@@ -65,13 +65,13 @@ gulp.task('server-mockserver-start', function() {
 
 });
 
-gulp.task('server-mockserver-stop', function() {
+gulp.task('test:setup:mockserver:stop', function() {
 
   return mockServer.stop_mockserver();
 
 });
 
-gulp.task('server-express-start', function() {
+gulp.task('test:setup:express:start', function() {
 
   var gzippedBody = zlib.gzipSync('test compressed body');
   var redirect = function(count) {
@@ -118,13 +118,13 @@ gulp.task('server-express-start', function() {
 
 });
 
-gulp.task('server-express-stop', function() {
+gulp.task('test:setup:express:stop', function() {
 
   server.close();
 
 });
 
-gulp.task('test-unit-client', function(done) {
+gulp.task('test:unit:client', function(done) {
 
   new Karma({
     configFile: __dirname + '/karma.conf.js',
@@ -142,7 +142,7 @@ gulp.task('test-unit-client', function(done) {
 
 });
 
-gulp.task('test-functional-client', function(done) {
+gulp.task('test:functional:client', function(done) {
 
   new Karma({
     configFile: __dirname + '/karma.conf.js',
@@ -160,7 +160,7 @@ gulp.task('test-functional-client', function(done) {
 
 });
 
-gulp.task('test-unit-server', function() {
+gulp.task('test:unit:server', function() {
 
   return gulp.src(['test/unit/**/*.js'], { read: false })
     .pipe(mocha({
@@ -169,7 +169,7 @@ gulp.task('test-unit-server', function() {
 
 });
 
-gulp.task('test-functional-server', function() {
+gulp.task('test:functional:server', function() {
 
   return gulp.src(['test/functional/**/*.js'], { read: false })
     .pipe(mocha({
@@ -178,15 +178,25 @@ gulp.task('test-functional-server', function() {
 
 });
 
-gulp.task('test-functional', function(done) {
+gulp.task('test:functional', function(done) {
 
   runSequence(
-    'server-express-start',
-    'server-mockserver-start',
-    'test-functional-client',
-    'test-functional-server',
-    'server-mockserver-stop',
-    'server-express-stop',
+    'test:setup:express:start',
+    'test:setup:mockserver:start',
+    'test:functional:client',
+    'test:functional:server',
+    'test:setup:mockserver:stop',
+    'test:setup:express:stop',
+    done
+  )
+
+});
+
+gulp.task('test:unit', function(done) {
+
+  runSequence(
+    'test:unit:client',
+    'test:unit:server',
     done
   )
 
@@ -195,9 +205,8 @@ gulp.task('test-functional', function(done) {
 gulp.task('test', function(done) {
 
   runSequence(
-    'test-unit-client',
-    'test-unit-server',
-    'test-functional',
+    'test:unit',
+    'test:functional',
     done
   )
 
