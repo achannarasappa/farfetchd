@@ -5,7 +5,9 @@ var jscs = require('gulp-jscs');
 var gutil = require('gulp-util');
 var uglify = require('gulp-uglify');
 var sourcemaps = require('gulp-sourcemaps');
-var shell = require('gulp-shell')
+var shell = require('gulp-shell');
+var gulpJsdoc2md = require('gulp-jsdoc-to-markdown');
+var rename = require('gulp-rename');
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
@@ -14,7 +16,8 @@ var runSequence = require('run-sequence');
 var mockServer = require('mockserver-grunt');
 var express = require('express');
 var zlib = require('zlib');
-var configuration = require('./test/configuration')
+var fs = require('fs');
+var configuration = require('./test/configuration');
 var server;
 
 gulp.task('default', function() {
@@ -59,6 +62,21 @@ gulp.task('bundle', [ 'compile' ], function () {
 });
 
 gulp.task('docs:prepare', shell.task('gitbook install'));
+
+gulp.task('docs:compile', function() {
+
+  return gulp.src('./lib/body.es6')
+    .pipe(gulpJsdoc2md({ template: fs.readFileSync('./docs/api/body.hbs', 'utf8') }))
+    .on('error', function (err) {
+      console.log('jsdoc2md failed')
+      console.log(err.message);
+    })
+    .pipe(rename(function (path) {
+      path.extname = '.md'
+    }))
+    .pipe(gulp.dest('./docs/api'))
+
+});
 
 gulp.task('docs:serve', shell.task('gitbook install && gitbook serve'));
 

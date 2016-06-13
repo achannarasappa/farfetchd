@@ -4,3 +4,5 @@ node_modules
 !karma.conf.js
 !gulpfile.js
 dist
+_book
+mockserver-*
