@@ -11,12 +11,23 @@ const consumed = (body) => {
 
 };
 
-class Body {
+/**
+ @module body
+ */
 
+/**
+ * [Body mixin](https://fetch.spec.whatwg.org/#body-mixin) representing the body of a request or response. A body can be used through one of the class methods after which is can not be used again.
+ * @alias module:body
+ */
+class Body {
+  /**
+   * @param {(String|FormData)} [body='']
+   * @returns {Object} Body instance
+   */
   constructor(body = '') {
 
-    this.bodyUsed = false;
     this._bodyInit = body;
+    this.bodyUsed = false;
 
     if (_.isString(body)) {
 
@@ -34,6 +45,10 @@ class Body {
 
   }
 
+  /**
+   * Uses body and returns a Promise containing the body.
+   * @returns {Promise.<String>}
+   */
   text() {
 
     const rejected = consumed(this);
@@ -42,6 +57,10 @@ class Body {
 
   }
 
+  /**
+   * Uses body and returns a Promise containing a parsed JSON object from the body.
+   * @returns {Promise.<Object>}
+   */
   json() {
 
     return this.text()
@@ -49,6 +68,10 @@ class Body {
 
   }
 
+  /**
+   * Uses body and returns a Promise containing an instance of FormData.
+   * @returns {Promise.<FormData>}
+   */
   formData() {
 
     return this.text()
