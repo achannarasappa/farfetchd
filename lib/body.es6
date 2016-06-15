@@ -46,7 +46,7 @@ class Body {
   }
 
   /**
-   * Uses body and returns a Promise containing the body.
+   * Uses body and returns a Promise that resolves the body.
    * @returns {Promise.<String>}
    */
   text() {
@@ -58,7 +58,7 @@ class Body {
   }
 
   /**
-   * Uses body and returns a Promise containing a parsed JSON object from the body.
+   * Uses body and returns a Promise that resolves a parsed JSON object from the body.
    * @returns {Promise.<Object>}
    */
   json() {
@@ -69,7 +69,7 @@ class Body {
   }
 
   /**
-   * Uses body and returns a Promise containing an instance of FormData.
+   * Uses body and returns a Promise that resolves an instance of FormData.
    * @returns {Promise.<FormData>}
    */
   formData() {
@@ -91,12 +91,22 @@ class Body {
 
   }
 
+  /**
+   * Uses body and returns a Promise that resolves a Blob. Note this is not implemented yet.
+   * @ignore
+   * @returns {Promise.<Blob>}
+   */
   blob() {
 
     return Promise.reject(new Error('Method has not been implemented by farfetchd yet'));
 
   }
 
+  /**
+   * Uses body and returns a Promise that resolves an ArrayBuffer. Note this is not implemented yet.
+   * @ignore
+   * @returns {Promise.<ArrayBuffer>}
+   */
   arrayBuffer() {
 
     return Promise.reject(new Error('Method has not been implemented by farfetchd yet'));
