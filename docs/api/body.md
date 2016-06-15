@@ -18,26 +18,33 @@
 <a name="new_module_body--Body_new"></a>
 
 #### new Body([body])
-
-| Param | Type | Default |
-| --- | --- | --- |
-| [body] | <code>String</code> &#124; <code>FormData</code> | <code>&#x27;&#x27;</code> | 
+<table>
+  <thead>
+    <tr>
+      <th>Param</th><th>Type</th><th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+<tr>
+    <td>[body]</td><td><code>String</code> | <code>FormData</code></td><td><code>&#x27;&#x27;</code></td>
+    </tr>  </tbody>
+</table>
 
 <a name="module_body--Body+text"></a>
 
 #### body.text() ⇒ <code>Promise.&lt;String&gt;</code>
-Uses body and returns a Promise containing the body.
+Uses body and returns a Promise that resolves the body.
 
 **Kind**: instance method of <code>[Body](#exp_module_body--Body)</code>  
 <a name="module_body--Body+json"></a>
 
 #### body.json() ⇒ <code>Promise.&lt;Object&gt;</code>
-Uses body and returns a Promise containing a parsed JSON object from the body.
+Uses body and returns a Promise that resolves a parsed JSON object from the body.
 
 **Kind**: instance method of <code>[Body](#exp_module_body--Body)</code>  
 <a name="module_body--Body+formData"></a>
 
 #### body.formData() ⇒ <code>Promise.&lt;FormData&gt;</code>
-Uses body and returns a Promise containing an instance of FormData.
+Uses body and returns a Promise that resolves an instance of FormData.
 
 **Kind**: instance method of <code>[Body](#exp_module_body--Body)</code>  

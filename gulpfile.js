@@ -66,7 +66,10 @@ gulp.task('docs:prepare', shell.task('gitbook install'));
 gulp.task('docs:compile', function() {
 
   return gulp.src('./lib/body.es6')
-    .pipe(gulpJsdoc2md({ template: fs.readFileSync('./docs/api/body.hbs', 'utf8') }))
+    .pipe(gulpJsdoc2md({
+      template: fs.readFileSync('./docs/api/body.hbs', 'utf8'),
+      'no-gfm': true,
+    }))
     .on('error', function (err) {
       console.log('jsdoc2md failed')
       console.log(err.message);
