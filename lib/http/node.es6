@@ -6,6 +6,10 @@ import { default as _ } from 'lodash';
 import Response from '../response';
 import Headers from '../headers';
 
+/**
+ @module http/node
+ */
+
 const contentEncodings = [
   'gzip',
   'compress',

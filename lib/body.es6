@@ -2,6 +2,10 @@ import FormData from 'isomorphic-form-data';
 import { default as _ } from 'lodash';
 import { Promise } from 'es6-promise';
 
+/**
+ @module body
+ */
+
 const consumed = (body) => {
 
   if (body.bodyUsed)
@@ -10,10 +14,6 @@ const consumed = (body) => {
   body.bodyUsed = true;
 
 };
-
-/**
- @module body
- */
 
 /**
  * [Body mixin](https://fetch.spec.whatwg.org/#body-mixin) representing the body of a request or response. A body can be used through one of the class methods after which is can not be used again.

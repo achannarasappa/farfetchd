@@ -4,6 +4,11 @@ import Body from './body';
 import Headers from './headers';
 import { VERSION } from './constants';
 
+/**
+ @module request
+ */
+
+
 const validMethods = [
   'DELETE',
   'GET',

@@ -65,9 +65,14 @@ gulp.task('docs:prepare', shell.task('gitbook install'));
 
 gulp.task('docs:compile', function() {
 
-  return gulp.src('./lib/body.es6')
-    .pipe(gulpJsdoc2md({
-      template: fs.readFileSync('./docs/api/body.hbs', 'utf8'),
+  return gulp.src([
+    'lib/body.es6',
+    'lib/fetch.es6',
+    'lib/headers.es6',
+    'lib/request.es6',
+    'lib/response.es6',
+  ]).pipe(gulpJsdoc2md({
+      template: '{{#module}}{{>docs~}}{{/module}}',
       'no-gfm': true,
     }))
     .on('error', function (err) {

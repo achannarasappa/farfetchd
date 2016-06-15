@@ -2,6 +2,10 @@ import * as _ from 'lodash';
 import Body from './body';
 import Headers from './headers';
 
+/**
+ @module response
+ */
+
 const initKeys = [
   'status',
   'statusText',
