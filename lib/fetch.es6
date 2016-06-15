@@ -7,6 +7,10 @@ import { isNode } from './util';
 import httpNode from './http/node';
 import httpBrowser from './http/browser';
 
+/**
+ @module fetch
+ */
+
 const fetch = (input, init) => {
 
   const request = new Request(input, init);

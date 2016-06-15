@@ -1,5 +1,9 @@
 import * as _ from 'lodash';
 
+/**
+ @module headers
+ */
+
 const castString = (value) =>  _.isString(value) ? value : String(value);
 
 const normalizeName = (name) => {

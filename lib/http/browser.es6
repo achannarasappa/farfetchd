@@ -3,6 +3,10 @@ import { parse as parseHeaders } from 'get-headers'
 import Response from '../response';
 import Headers from '../headers';
 
+/**
+ @module http/browser
+ */
+
 const httpBrowser = (request) => {
 
   return new Promise((resolve, reject) => {
