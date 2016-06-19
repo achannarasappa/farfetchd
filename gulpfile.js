@@ -63,7 +63,7 @@ gulp.task('bundle', [ 'compile' ], function () {
 
 });
 
-gulp.task('docs:prepare', shell.task('gitbook install'));
+gulp.task('docs:prepare', shell.task('./node_modules/.bin/gitbook install'));
 
 gulp.task('docs:compile', function() {
 
