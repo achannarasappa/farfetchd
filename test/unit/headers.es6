@@ -1,4 +1,4 @@
-import Headers from '../../lib/headers';
+import Headers from '../../lib/headers.es6';
 import { default as chai, expect } from 'chai';
 import { default as chaiAsPromised } from 'chai-as-promised';
 import { default as sinon } from 'sinon';

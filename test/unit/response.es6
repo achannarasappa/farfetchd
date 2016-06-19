@@ -1,4 +1,4 @@
-import Response from '../../lib/response';
+import Response from '../../lib/response.es6';
 import Headers from '../../lib/headers';
 import { default as chai, expect } from 'chai';
 import { default as chaiAsPromised } from 'chai-as-promised';
@@ -27,7 +27,6 @@ describe('Response', () => {
       const testHeadersInstance = new Headers({
         Cookie: 'test',
       });
-
       expect(new Response())
         .to.have.property('headers')
         .that.is.an.instanceof(Headers);

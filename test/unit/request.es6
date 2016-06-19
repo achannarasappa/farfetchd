@@ -1,4 +1,4 @@
-import Request from '../../lib/request';
+import Request from '../../lib/request.es6';
 import Headers from '../../lib/headers';
 import FormData from 'isomorphic-form-data';
 import { default as chai, expect } from 'chai';

@@ -43,6 +43,8 @@ gulp.task('style', function() {
 
 });
 
+gulp.task('cover', shell.task('./node_modules/.bin/nyc --reporter=lcov --reporter=text ./node_modules/.bin/mocha --compilers es6:babel-register ./test/unit/*.es6 && cat ./coverage/lcov.info | ./node_modules/.bin/coveralls'));
+
 gulp.task('bundle', [ 'compile' ], function () {
 
   var b = browserify({
@@ -191,23 +193,9 @@ gulp.task('test:functional:client', function(done) {
 
 });
 
-gulp.task('test:unit:server', function() {
+gulp.task('test:unit:server', shell.task('./node_modules/.bin/mocha --colors --compilers es6:babel-register ./test/unit/*.es6'));
 
-  return gulp.src(['test/unit/**/*.js'], { read: false })
-    .pipe(mocha({
-      reporter: 'spec',
-    }));
-
-});
-
-gulp.task('test:functional:server', function() {
-
-  return gulp.src(['test/functional/**/*.js'], { read: false })
-    .pipe(mocha({
-      reporter: 'spec',
-    }));
-
-});
+gulp.task('test:functional:server', shell.task('./node_modules/.bin/mocha --colors --compilers es6:babel-register ./test/functional/*.es6'));
 
 gulp.task('test:functional', function(done) {
 
