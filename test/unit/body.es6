@@ -1,5 +1,5 @@
 import FormData from 'isomorphic-form-data';
-import Body from '../../lib/body';
+import Body from '../../lib/body.es6';
 import { default as chai, expect } from 'chai';
 import { default as chaiAsPromised } from 'chai-as-promised';
 
@@ -94,6 +94,21 @@ describe('Body', () => {
       return expect(testBody.formData())
         .to.eventually
         .be.an.instanceOf(FormData);
+
+    });
+
+  });
+
+  describe('json', () => {
+
+    it('should parse json bodies', () => {
+
+      const expectedBody = { key: 'value' };
+      const testBody = new Body(JSON.stringify(expectedBody));
+
+      return expect(testBody.json())
+        .to.eventually
+        .eql(expectedBody);
 
     });
 
