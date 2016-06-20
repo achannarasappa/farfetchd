@@ -1,4 +1,6 @@
 # farfetched
+[![Build Status](https://travis-ci.org/achannarasappa/farfetchd.svg?branch=master)](https://travis-ci.org/achannarasappa/farfetchd) [![Coverage Status](https://coveralls.io/repos/github/achannarasappa/farfetchd/badge.svg?branch=master)](https://coveralls.io/github/achannarasappa/farfetchd?branch=master) [![dependencies](https://david-dm.org/achannarasappa/farfetchd.svg)](https://david-dm.org/achannarasappa/farfetchd.svg) [![npm version](https://badge.fury.io/js/farfetchd.svg)](https://badge.fury.io/js/farfetchd)
+
 Isomorphic implementation of the [Fetch standard](https://fetch.spec.whatwg.org/).
 
 * Does not modify global with `fetch`
