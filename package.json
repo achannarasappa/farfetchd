@@ -1,6 +1,6 @@
 {
   "name": "farfetchd",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Isomorphic Fetch standard implementation",
   "main": "lib/fetch.js",
   "scripts": {
