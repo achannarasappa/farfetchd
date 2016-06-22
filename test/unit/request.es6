@@ -30,7 +30,7 @@ describe('Request', () => {
           'Content-Length': 100,
           'Accept': '*/*',
           'Connection': 'keep-alive',
-          'User-Agent': 'farfetched/0.0.1',
+          'User-Agent': `farfetched/${ require('../../package.json').version }`,
         };
         const testHeadersInstance = new Headers(testHeadersObject);
         const testRequestInstance = new Request('http://example.com', { headers: testHeadersObject });
