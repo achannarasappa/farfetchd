@@ -43,9 +43,7 @@ gulp.task('style', function() {
 
 });
 
-gulp.task('cover', shell.task('./node_modules/.bin/nyc --reporter=lcov --reporter=text ./node_modules/.bin/mocha --compilers es6:babel-register ./test/unit/*.es6'));
-
-gulp.task('coveralls', shell.task('cat ./coverage/lcov.info | ./node_modules/.bin/coveralls'));
+gulp.task('coveralls', shell.task('./node_modules/.bin/gulp test:cover && cat ./coverage/lcov.info | ./node_modules/.bin/coveralls'));
 
 gulp.task('bundle', [ 'compile' ], function () {
 
@@ -90,7 +88,15 @@ gulp.task('docs:compile', function() {
 
 });
 
-gulp.task('docs:serve', shell.task('gitbook install && gitbook serve'));
+gulp.task('docs:clean', shell.task('./node_modules/.bin/rimraf _book'));
+
+gulp.task('docs:build', shell.task('./node_modules/.bin/gulp docs:clean && ./node_modules/.bin/gulp docs:compile && ./node_modules/.bin/gulp docs:prepare && ./node_modules/.bin/gitbook build'));
+
+gulp.task('docs:publish', shell.task('./node_modules/.bin/gulp docs:build && cd _book && echo \'farfetchd.js.org\' > CNAME && git init && git checkout -b gh-pages && git add . && git commit -am \'update docs\' && git push git@github.com:achannarasappa/farfetchd gh-pages -f'));
+
+gulp.task('docs:serve', shell.task('./node_modules/.bin/gulp docs:build && ./node_modules/.bin/gitbook serve'));
+
+gulp.task('test:cover', shell.task('./node_modules/.bin/nyc --reporter=lcov --reporter=text ./node_modules/.bin/mocha --compilers es6:babel-register ./test/unit/*.es6'));
 
 gulp.task('test:setup:mockserver:start', function() {
 
