@@ -9,7 +9,7 @@
     "style": "./node_modules/.bin/gulp style",
     "prepublish": "./node_modules/.bin/gulp bundle",
     "docs": "./node_modules/.bin/gulp docs:serve",
-    "cover": "./node_modules/.bin/gulp cover"
+    "cover": "./node_modules/.bin/gulp test:cover"
   },
   "repository": {
     "type": "git",
@@ -58,6 +58,7 @@
     "nyc": "^6.6.1",
     "pre-commit": "^1.1.2",
     "qs": "^6.0.2",
+    "rimraf": "^2.5.2",
     "run-sequence": "^1.1.5",
     "sinon": "^1.17.2",
     "sinon-chai": "^2.8.0",
