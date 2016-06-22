@@ -43,7 +43,9 @@ gulp.task('style', function() {
 
 });
 
-gulp.task('cover', shell.task('./node_modules/.bin/nyc --reporter=lcov --reporter=text ./node_modules/.bin/mocha --compilers es6:babel-register ./test/unit/*.es6 && cat ./coverage/lcov.info | ./node_modules/.bin/coveralls'));
+gulp.task('cover', shell.task('./node_modules/.bin/nyc --reporter=lcov --reporter=text ./node_modules/.bin/mocha --compilers es6:babel-register ./test/unit/*.es6'));
+
+gulp.task('coveralls', shell.task('cat ./coverage/lcov.info | ./node_modules/.bin/coveralls'));
 
 gulp.task('bundle', [ 'compile' ], function () {
 
