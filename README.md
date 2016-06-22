@@ -9,8 +9,8 @@ Isomorphic implementation of the [Fetch standard](https://fetch.spec.whatwg.org/
 ## Installation
 #### NPM
 `npm install farfetched --save`
-#### Bower
-`bower install farfetched --save`
+#### CDN
+`<script src="https://npmcdn.com/farfetchd/dist/fetch.js"></script>`
 ## Usage
 ```js
 import fetch from 'farfetched';
