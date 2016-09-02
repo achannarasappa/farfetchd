@@ -10,7 +10,7 @@ Isomorphic implementation of the [Fetch standard](https://fetch.spec.whatwg.org/
 #### NPM
 `npm install farfetched --save`
 #### CDN
-`<script src="https://npmcdn.com/farfetchd/dist/fetch.js"></script>`
+`<script src="https://unpkg.com/farfetchd/dist/fetch.js"></script>`
 ## Usage
 ```js
 import fetch from 'farfetched';
